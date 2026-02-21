@@ -1,0 +1,2095 @@
+{
+  "meta": {
+    "name": "Superteam Academy Design System",
+    "version": "2.1.0",
+    "changelog": "v2.1 adds complete route-level design specs for all 10 student pages. v2.0 added student/admin dashboard tokens. v1.0 established core brand system.",
+    "llm_instruction": "This is the single source of truth for every UI surface of Superteam Academy — landing page, student dashboard, and admin dashboard. Never introduce colors, fonts, spacing, or patterns outside this file. When in doubt, refer here first."
+  },
+  "brand": {
+    "name": "Superteam Academy",
+    "tagline": "The fastest path from curious to building on Solana.",
+    "personality": [
+      "earthy",
+      "premium",
+      "trustworthy",
+      "technical but approachable",
+      "builder-native"
+    ],
+    "tone": "Confident mentor in a forest cabin — not a SaaS startup, not Wall Street. Warm but authoritative.",
+    "audience": "Web3 developers, blockchain learners, Solana ecosystem builders"
+  },
+  "colors": {
+    "_rule": "60% cream backgrounds · 30% greens for structure and actions · 5% amber for highlights only · 5% charcoal for text. Never introduce any color outside this palette.",
+    "palette": {
+      "cream": {
+        "hex": "#f7eacb",
+        "role": "Primary page background, card fills, modal backgrounds"
+      },
+      "cream_dark": {
+        "hex": "#eeddb0",
+        "role": "Alt section backgrounds, dividers, input fills"
+      },
+      "cream_deeper": {
+        "hex": "#e3d09a",
+        "role": "Pressed states, deeper alternates, chart fills"
+      },
+      "green_primary": {
+        "hex": "#008c4c",
+        "role": "Primary CTAs, links, active states, progress bars, focus rings"
+      },
+      "green_secondary": {
+        "hex": "#2f6b3f",
+        "role": "Navbar, sidebar, dark hero sections, card header backgrounds"
+      },
+      "green_dark": {
+        "hex": "#1d4228",
+        "role": "Sidebar collapsed, deep dark panels, footer"
+      },
+      "green_hero": {
+        "hex": "#0d1f12",
+        "role": "Hero section deepest background layer"
+      },
+      "green_mint": {
+        "hex": "#52dda0",
+        "role": "Gradient fills, active sidebar indicator, success accents"
+      },
+      "green_mint_soft": {
+        "hex": "#a3d9b8",
+        "role": "Muted success, level 3 badge, soft highlights"
+      },
+      "amber": {
+        "hex": "#ffd23f",
+        "role": "Badges, XP earned, streak indicator, featured ribbons. MAX 5% per screen."
+      },
+      "amber_dark": {
+        "hex": "#f0c22e",
+        "role": "Amber hover states, gradient pair for amber button"
+      },
+      "charcoal": {
+        "hex": "#1b231d",
+        "role": "Primary text, icon strokes, dark surface base"
+      },
+      "charcoal_mid": {
+        "hex": "#2a352d",
+        "role": "Secondary dark surface"
+      },
+      "white": {
+        "hex": "#ffffff",
+        "role": "Card backgrounds on cream pages"
+      }
+    },
+    "semantic": {
+      "backgrounds": {
+        "page": "#f7eacb",
+        "page_alt": "#eeddb0",
+        "card": "#ffffff",
+        "card_on_dark": "rgba(13,31,18,0.85)",
+        "hero": "#0d1f12",
+        "nav": "rgba(22,50,30,0.92)",
+        "sidebar": "#2f6b3f",
+        "sidebar_deep": "#1d4228",
+        "dark_section": "#2f6b3f",
+        "modal_overlay": "rgba(27,35,29,0.65)",
+        "modal": "#ffffff",
+        "code": "#0d1f12",
+        "input": "#ffffff",
+        "input_on_dark": "rgba(247,234,203,0.07)",
+        "hover_on_light": "rgba(0,140,76,0.04)",
+        "hover_on_dark": "rgba(247,234,203,0.07)",
+        "selected_on_light": "rgba(0,140,76,0.07)",
+        "tag_beginner": "rgba(82,221,160,0.15)",
+        "tag_intermediate": "rgba(255,210,63,0.15)",
+        "tag_advanced": "rgba(163,217,184,0.12)"
+      },
+      "text": {
+        "primary": "#1b231d",
+        "secondary": "rgba(27,35,29,0.6)",
+        "muted": "rgba(27,35,29,0.4)",
+        "disabled": "rgba(27,35,29,0.25)",
+        "on_dark": "#f7eacb",
+        "on_dark_muted": "rgba(247,234,203,0.65)",
+        "on_dark_dim": "rgba(247,234,203,0.4)",
+        "on_dark_subtle": "rgba(247,234,203,0.25)",
+        "link": "#008c4c",
+        "link_hover": "#006d3a",
+        "success": "#008c4c",
+        "warning": "#b8860b",
+        "danger": "#c0392b",
+        "code": "#52dda0"
+      },
+      "borders": {
+        "light": "rgba(27,35,29,0.1)",
+        "medium": "rgba(27,35,29,0.18)",
+        "strong": "rgba(27,35,29,0.3)",
+        "on_dark": "rgba(247,234,203,0.1)",
+        "on_dark_strong": "rgba(247,234,203,0.2)",
+        "primary": "rgba(0,140,76,0.3)",
+        "primary_strong": "#008c4c",
+        "accent": "rgba(255,210,63,0.35)",
+        "danger": "rgba(192,57,43,0.3)"
+      },
+      "status": {
+        "success_bg": "rgba(0,140,76,0.1)",
+        "success_text": "#008c4c",
+        "success_border": "rgba(0,140,76,0.25)",
+        "warning_bg": "rgba(255,210,63,0.12)",
+        "warning_text": "#b8860b",
+        "warning_border": "rgba(255,210,63,0.3)",
+        "danger_bg": "rgba(192,57,43,0.09)",
+        "danger_text": "#c0392b",
+        "danger_border": "rgba(192,57,43,0.25)",
+        "info_bg": "rgba(47,107,63,0.1)",
+        "info_text": "#2f6b3f",
+        "info_border": "rgba(47,107,63,0.2)"
+      },
+      "xp_tiers": {
+        "bronze_bg": "rgba(163,113,65,0.12)",
+        "bronze_text": "#8a5c2a",
+        "silver_bg": "rgba(140,140,155,0.12)",
+        "silver_text": "#5a5a6a",
+        "gold_bg": "rgba(255,210,63,0.18)",
+        "gold_text": "#b8860b",
+        "platinum_bg": "rgba(82,221,160,0.15)",
+        "platinum_text": "#008c4c"
+      }
+    },
+    "gradients": {
+      "primary_cta": "linear-gradient(135deg, #008c4c, #006d3a)",
+      "amber_cta": "linear-gradient(135deg, #ffd23f, #f0c22e)",
+      "progress_bar": "linear-gradient(90deg, #008c4c, #52dda0)",
+      "hero_radial": "radial-gradient(ellipse 60% 80% at 80% 50%, rgba(0,140,76,0.35) 0%, transparent 70%)",
+      "dark_section": "radial-gradient(circle at 70% 50%, rgba(0,140,76,0.3) 0%, transparent 55%), repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(247,234,203,0.03) 40px, rgba(247,234,203,0.03) 41px)",
+      "sidebar_footer": "linear-gradient(to top, rgba(29,66,40,0.8), transparent)",
+      "mint_shine": "linear-gradient(90deg, #52dda0, #a3d9b8)",
+      "featured_bar": "linear-gradient(90deg, #008c4c, #52dda0)"
+    }
+  },
+  "typography": {
+    "_rule": "Playfair Display for ALL headings and display moments. DM Sans for ALL UI, body, labels, and buttons. Never substitute. Never mix within a single element.",
+    "google_fonts": "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap",
+    "fonts": {
+      "display": {
+        "family": "'Playfair Display', serif",
+        "weights": [700, 900],
+        "use_for": [
+          "page titles",
+          "section headings",
+          "card titles",
+          "stat numbers",
+          "logo wordmark",
+          "pull quotes",
+          "hero headline"
+        ]
+      },
+      "ui": {
+        "family": "'DM Sans', sans-serif",
+        "weights": [300, 400, 500, 600],
+        "use_for": [
+          "body copy",
+          "nav links",
+          "buttons",
+          "labels",
+          "badges",
+          "table content",
+          "form elements",
+          "captions",
+          "overlines"
+        ]
+      }
+    },
+    "scale": {
+      "hero_xl": {
+        "size": "clamp(2.8rem,5vw,4.4rem)",
+        "weight": 900,
+        "lineHeight": 1.08,
+        "letterSpacing": "-0.03em",
+        "font": "display",
+        "use": "Hero headline"
+      },
+      "section_lg": {
+        "size": "clamp(2rem,3.5vw,2.8rem)",
+        "weight": 900,
+        "lineHeight": 1.12,
+        "letterSpacing": "-0.02em",
+        "font": "display",
+        "use": "Section titles, page h1"
+      },
+      "section_md": {
+        "size": "clamp(1.5rem,2.5vw,2rem)",
+        "weight": 700,
+        "lineHeight": 1.2,
+        "letterSpacing": "-0.015em",
+        "font": "display",
+        "use": "Dashboard page headings"
+      },
+      "card_title": {
+        "size": "1.25rem",
+        "weight": 700,
+        "lineHeight": 1.25,
+        "letterSpacing": "-0.01em",
+        "font": "display",
+        "use": "Card titles, widget headings"
+      },
+      "stat_number": {
+        "size": "2.2rem",
+        "weight": 900,
+        "lineHeight": 1,
+        "letterSpacing": "-0.02em",
+        "font": "display",
+        "use": "Dashboard KPI numbers"
+      },
+      "stat_sm": {
+        "size": "1.5rem",
+        "weight": 900,
+        "lineHeight": 1,
+        "letterSpacing": "-0.02em",
+        "font": "display",
+        "use": "Smaller stat values"
+      },
+      "body_lg": {
+        "size": "1.0625rem",
+        "weight": 400,
+        "lineHeight": 1.72,
+        "font": "ui",
+        "use": "Hero descriptions, long-form"
+      },
+      "body_md": {
+        "size": "0.9375rem",
+        "weight": 400,
+        "lineHeight": 1.65,
+        "font": "ui",
+        "use": "Card descriptions, body copy"
+      },
+      "body_sm": {
+        "size": "0.875rem",
+        "weight": 400,
+        "lineHeight": 1.6,
+        "font": "ui",
+        "use": "Secondary content, table cells"
+      },
+      "body_xs": {
+        "size": "0.8125rem",
+        "weight": 400,
+        "lineHeight": 1.55,
+        "font": "ui",
+        "use": "Metadata, timestamps, captions"
+      },
+      "label_md": {
+        "size": "0.875rem",
+        "weight": 600,
+        "lineHeight": 1.4,
+        "font": "ui",
+        "use": "Form labels, nav links, button text (md/lg)"
+      },
+      "label_sm": {
+        "size": "0.8125rem",
+        "weight": 600,
+        "lineHeight": 1.4,
+        "font": "ui",
+        "use": "Small button text, input labels"
+      },
+      "overline": {
+        "size": "0.6875rem",
+        "weight": 700,
+        "lineHeight": 1.4,
+        "letterSpacing": "0.1em",
+        "textTransform": "uppercase",
+        "font": "ui",
+        "use": "Section eyebrows, badge text, table headers, sidebar section labels"
+      },
+      "code": {
+        "size": "0.8125rem",
+        "weight": 400,
+        "lineHeight": 1.6,
+        "font": "monospace",
+        "use": "Code blocks, wallet addresses, tx hashes"
+      }
+    }
+  },
+  "spacing": {
+    "_rule": "4px base unit. Always use multiples of 4. Never use odd numbers like 7px or 13px.",
+    "base": "4px",
+    "scale": {
+      "1": "4px",
+      "2": "8px",
+      "3": "12px",
+      "4": "16px",
+      "5": "20px",
+      "6": "24px",
+      "7": "28px",
+      "8": "32px",
+      "10": "40px",
+      "12": "48px",
+      "14": "56px",
+      "16": "64px",
+      "20": "80px",
+      "24": "96px",
+      "32": "128px"
+    },
+    "layout": {
+      "page_x": "5%",
+      "page_max_width": "1200px",
+      "section_y": "6rem",
+      "card_padding": "28px",
+      "card_padding_sm": "20px",
+      "nav_height": "68px",
+      "topbar_height": "60px",
+      "sidebar_width": "260px",
+      "sidebar_collapsed": "64px",
+      "dashboard_main_padding": "24px",
+      "dashboard_max_width": "1100px"
+    }
+  },
+  "radii": {
+    "2": "2px",
+    "4": "4px",
+    "6": "6px",
+    "8": "8px",
+    "12": "12px",
+    "14": "14px",
+    "16": "16px",
+    "20": "20px",
+    "full": "9999px",
+    "circle": "50%",
+    "component_map": {
+      "button": "8px",
+      "button_sm": "6px",
+      "input": "8px",
+      "card": "16px",
+      "card_lg": "20px",
+      "badge": "4px",
+      "pill_badge": "9999px",
+      "avatar": "50%",
+      "avatar_square": "10px",
+      "modal": "20px",
+      "dropdown": "10px",
+      "tooltip": "6px",
+      "progress_bar": "9999px",
+      "sidebar_nav_item": "8px",
+      "icon_container": "10px",
+      "stat_card": "16px",
+      "table_row": "0px",
+      "chart_container": "16px",
+      "tag": "4px"
+    }
+  },
+  "shadows": {
+    "xs": "0 1px 3px rgba(27,35,29,0.07)",
+    "sm": "0 2px 8px rgba(27,35,29,0.08)",
+    "md": "0 4px 16px rgba(27,35,29,0.1)",
+    "lg": "0 8px 32px rgba(27,35,29,0.12)",
+    "xl": "0 16px 48px rgba(27,35,29,0.14)",
+    "2xl": "0 24px 64px rgba(27,35,29,0.16)",
+    "card_hover": "0 20px 56px rgba(27,35,29,0.14)",
+    "primary": "0 2px 14px rgba(0,140,76,0.38)",
+    "primary_hover": "0 6px 22px rgba(0,140,76,0.48)",
+    "amber": "0 4px 20px rgba(255,210,63,0.4)",
+    "amber_hover": "0 8px 28px rgba(255,210,63,0.5)",
+    "modal": "0 32px 80px rgba(27,35,29,0.25)",
+    "glow_green": "0 0 32px rgba(0,140,76,0.25)",
+    "glow_mint": "0 0 24px rgba(82,221,160,0.3)",
+    "focus_ring": "0 0 0 3px rgba(0,140,76,0.35)",
+    "focus_amber": "0 0 0 3px rgba(255,210,63,0.4)"
+  },
+  "animation": {
+    "_rule": "Transitions default to 0.2s. Cards use spring easing. Never animate layout properties. Always include prefers-reduced-motion fallback.",
+    "duration": {
+      "fast": "0.15s",
+      "normal": "0.2s",
+      "medium": "0.3s",
+      "slow": "0.5s",
+      "xslow": "0.8s"
+    },
+    "easing": {
+      "default": "ease",
+      "out": "ease-out",
+      "spring": "cubic-bezier(0.34, 1.2, 0.64, 1)",
+      "smooth": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    "transitions": {
+      "button": "all 0.2s ease",
+      "card": "all 0.3s cubic-bezier(0.34,1.2,0.64,1)",
+      "sidebar": "width 0.3s ease, transform 0.3s ease",
+      "color": "color 0.2s ease, background-color 0.2s ease",
+      "progress": "width 1.2s ease",
+      "opacity": "opacity 0.2s ease"
+    },
+    "hover_transforms": {
+      "card": "translateY(-5px)",
+      "card_sm": "translateY(-3px)",
+      "button": "translateY(-2px)",
+      "icon_button": "scale(1.08)"
+    },
+    "keyframes": {
+      "fade_up": "from { opacity:0; transform:translateY(24px) } to { opacity:1; transform:translateY(0) }",
+      "pulse_dot": "0%,100% { opacity:1; transform:scale(1) } 50% { opacity:0.4; transform:scale(1.5) }",
+      "float_slow": "0%,100% { transform:translateY(0px) } 50% { transform:translateY(-14px) }",
+      "float_fast": "0%,100% { transform:translateY(0px) } 50% { transform:translateY(-7px) }",
+      "marquee": "0% { transform:translateX(0) } 100% { transform:translateX(-50%) }",
+      "shimmer": "0% { background-position:-400px 0 } 100% { background-position:400px 0 }",
+      "aurora": "0%,100% { transform:translate(0%,0%) scale(1) } 50% { transform:translate(4%,-6%) scale(1.08) }",
+      "spin_slow": "from { transform:rotate(0deg) } to { transform:rotate(360deg) }"
+    }
+  },
+  "components": {
+    "_rule": "Build every component exactly to these specs. Variant names are canonical — use them in code comments and class names.",
+    "button": {
+      "base": {
+        "fontFamily": "'DM Sans', sans-serif",
+        "fontWeight": 600,
+        "borderRadius": "8px",
+        "cursor": "pointer",
+        "transition": "all 0.2s ease",
+        "display": "inline-flex",
+        "alignItems": "center",
+        "gap": "8px",
+        "whiteSpace": "nowrap",
+        "minHeight": "44px"
+      },
+      "sizes": {
+        "sm": {
+          "padding": "6px 14px",
+          "fontSize": "0.75rem",
+          "borderRadius": "6px",
+          "minHeight": "34px"
+        },
+        "md": {
+          "padding": "10px 22px",
+          "fontSize": "0.875rem"
+        },
+        "lg": {
+          "padding": "14px 32px",
+          "fontSize": "0.9375rem"
+        }
+      },
+      "variants": {
+        "primary": {
+          "background": "#008c4c",
+          "color": "#f7eacb",
+          "border": "none",
+          "boxShadow": "0 2px 14px rgba(0,140,76,0.38)",
+          "hover_bg": "#007a42",
+          "hover_transform": "translateY(-2px)",
+          "hover_shadow": "0 6px 22px rgba(0,140,76,0.48)"
+        },
+        "secondary": {
+          "background": "rgba(0,140,76,0.1)",
+          "color": "#008c4c",
+          "border": "1px solid rgba(0,140,76,0.2)",
+          "hover_bg": "rgba(0,140,76,0.18)",
+          "hover_border": "rgba(0,140,76,0.35)"
+        },
+        "ghost_dark": {
+          "_note": "On dark/green backgrounds",
+          "background": "transparent",
+          "color": "#f7eacb",
+          "border": "1.5px solid rgba(247,234,203,0.38)",
+          "hover_bg": "rgba(247,234,203,0.09)",
+          "hover_border": "#f7eacb"
+        },
+        "ghost_light": {
+          "_note": "On cream/white backgrounds",
+          "background": "transparent",
+          "color": "#1b231d",
+          "border": "1.5px solid rgba(27,35,29,0.2)",
+          "hover_border": "#008c4c",
+          "hover_color": "#008c4c"
+        },
+        "amber": {
+          "background": "linear-gradient(135deg, #ffd23f, #f0c22e)",
+          "color": "#1b231d",
+          "fontWeight": 800,
+          "border": "none",
+          "boxShadow": "0 4px 20px rgba(255,210,63,0.4)",
+          "hover_transform": "translateY(-2px)",
+          "hover_shadow": "0 8px 28px rgba(255,210,63,0.5)"
+        },
+        "danger": {
+          "background": "#c0392b",
+          "color": "#ffffff",
+          "border": "none",
+          "hover_bg": "#a93226"
+        },
+        "icon_only": {
+          "_note": "Square icon button",
+          "padding": "0",
+          "width": "40px",
+          "height": "40px",
+          "borderRadius": "8px",
+          "background": "transparent",
+          "border": "1px solid rgba(27,35,29,0.12)",
+          "hover_bg": "rgba(27,35,29,0.06)",
+          "color": "rgba(27,35,29,0.5)"
+        }
+      }
+    },
+    "badge": {
+      "base": {
+        "fontFamily": "'DM Sans', sans-serif",
+        "fontSize": "0.6875rem",
+        "fontWeight": 700,
+        "letterSpacing": "0.08em",
+        "textTransform": "uppercase",
+        "padding": "3px 9px",
+        "borderRadius": "4px",
+        "display": "inline-flex",
+        "alignItems": "center",
+        "gap": "5px"
+      },
+      "pill_override": {
+        "borderRadius": "9999px",
+        "padding": "4px 12px"
+      },
+      "variants": {
+        "success": {
+          "bg": "rgba(0,140,76,0.12)",
+          "color": "#008c4c",
+          "border": "1px solid rgba(0,140,76,0.2)"
+        },
+        "warning": {
+          "bg": "rgba(255,210,63,0.15)",
+          "color": "#b8860b",
+          "border": "1px solid rgba(255,210,63,0.3)"
+        },
+        "danger": {
+          "bg": "rgba(192,57,43,0.1)",
+          "color": "#c0392b",
+          "border": "1px solid rgba(192,57,43,0.25)"
+        },
+        "info": {
+          "bg": "rgba(47,107,63,0.1)",
+          "color": "#2f6b3f",
+          "border": "1px solid rgba(47,107,63,0.2)"
+        },
+        "mint": {
+          "bg": "rgba(82,221,160,0.15)",
+          "color": "#008c4c",
+          "border": "1px solid rgba(82,221,160,0.25)"
+        },
+        "amber": {
+          "bg": "rgba(255,210,63,0.18)",
+          "color": "#b8860b",
+          "border": "1px solid rgba(255,210,63,0.3)"
+        },
+        "neutral": {
+          "bg": "rgba(27,35,29,0.07)",
+          "color": "rgba(27,35,29,0.55)",
+          "border": "1px solid rgba(27,35,29,0.12)"
+        },
+        "on_dark": {
+          "bg": "rgba(82,221,160,0.15)",
+          "color": "#52dda0",
+          "border": "1px solid rgba(82,221,160,0.2)"
+        },
+        "xp": {
+          "bg": "linear-gradient(135deg,#ffd23f,#f0c22e)",
+          "color": "#1b231d",
+          "border": "none",
+          "fontWeight": 800
+        },
+        "beginner": {
+          "bg": "rgba(82,221,160,0.15)",
+          "color": "#52dda0",
+          "border": "1px solid rgba(82,221,160,0.2)"
+        },
+        "intermediate": {
+          "bg": "rgba(255,210,63,0.15)",
+          "color": "#b8860b",
+          "border": "1px solid rgba(255,210,63,0.3)"
+        },
+        "advanced": {
+          "bg": "rgba(163,217,184,0.12)",
+          "color": "#3a7a50",
+          "border": "1px solid rgba(163,217,184,0.25)"
+        }
+      }
+    },
+    "card": {
+      "base": {
+        "background": "#ffffff",
+        "border": "1px solid rgba(27,35,29,0.1)",
+        "borderRadius": "16px",
+        "padding": "28px",
+        "transition": "all 0.3s cubic-bezier(0.34,1.2,0.64,1)"
+      },
+      "hover": {
+        "transform": "translateY(-5px)",
+        "boxShadow": "0 20px 56px rgba(27,35,29,0.14)",
+        "borderColor": "#008c4c"
+      },
+      "variants": {
+        "default": {
+          "_extends": "base"
+        },
+        "featured": {
+          "border": "1.5px solid #008c4c",
+          "boxShadow": "0 8px 32px rgba(0,140,76,0.1)",
+          "top_bar": "3px solid linear-gradient(90deg, #008c4c, #52dda0)"
+        },
+        "on_dark": {
+          "background": "rgba(13,31,18,0.85)",
+          "border": "1px solid rgba(0,140,76,0.25)",
+          "backdropFilter": "blur(20px)"
+        },
+        "glass_dark": {
+          "background": "rgba(247,234,203,0.06)",
+          "border": "1px solid rgba(247,234,203,0.12)",
+          "backdropFilter": "blur(14px)"
+        },
+        "stat": {
+          "_note": "Dashboard KPI card — icon + number + label + optional trend",
+          "background": "#ffffff",
+          "border": "1px solid rgba(27,35,29,0.09)",
+          "borderRadius": "16px",
+          "padding": "24px",
+          "icon_size": "44px",
+          "icon_radius": "12px"
+        },
+        "activity": {
+          "_note": "Timeline/feed item with colored left border",
+          "borderLeft": "3px solid",
+          "padding": "14px 18px",
+          "borderRadius": "0 12px 12px 0",
+          "background": "#ffffff"
+        }
+      }
+    },
+    "input": {
+      "base": {
+        "fontFamily": "'DM Sans', sans-serif",
+        "fontSize": "0.875rem",
+        "background": "#ffffff",
+        "border": "1px solid rgba(27,35,29,0.2)",
+        "borderRadius": "8px",
+        "padding": "10px 14px",
+        "color": "#1b231d",
+        "outline": "none",
+        "transition": "border-color 0.2s ease, box-shadow 0.2s ease",
+        "minHeight": "44px"
+      },
+      "states": {
+        "placeholder": "rgba(27,35,29,0.35)",
+        "focus_border": "#008c4c",
+        "focus_shadow": "0 0 0 3px rgba(0,140,76,0.35)",
+        "error_border": "#c0392b",
+        "error_shadow": "0 0 0 3px rgba(192,57,43,0.2)",
+        "disabled_bg": "rgba(27,35,29,0.04)",
+        "disabled_color": "rgba(27,35,29,0.3)"
+      },
+      "on_dark": {
+        "background": "rgba(247,234,203,0.07)",
+        "border": "1px solid rgba(247,234,203,0.15)",
+        "color": "#f7eacb",
+        "placeholder": "rgba(247,234,203,0.35)"
+      }
+    },
+    "avatar": {
+      "sizes": {
+        "xs": {
+          "size": "24px",
+          "fontSize": "0.6rem",
+          "radius": "50%"
+        },
+        "sm": {
+          "size": "32px",
+          "fontSize": "0.75rem",
+          "radius": "50%"
+        },
+        "md": {
+          "size": "40px",
+          "fontSize": "0.875rem",
+          "radius": "50%"
+        },
+        "lg": {
+          "size": "52px",
+          "fontSize": "1.1rem",
+          "radius": "50%"
+        },
+        "xl": {
+          "size": "72px",
+          "fontSize": "1.4rem",
+          "radius": "50%"
+        }
+      },
+      "bg_pool": ["#008c4c", "#1d4228", "#3a7a50", "#2f6b3f", "#1d5c35"],
+      "fontWeight": 700,
+      "fontFamily": "'DM Sans', sans-serif",
+      "color": "#f7eacb",
+      "ring_active": "2px solid #52dda0",
+      "ring_inactive": "2px solid rgba(27,35,29,0.1)"
+    },
+    "progress_bar": {
+      "height": "5px",
+      "radius": "9999px",
+      "transition": "width 1.2s ease",
+      "track_light": "rgba(27,35,29,0.08)",
+      "track_dark": "rgba(247,234,203,0.08)",
+      "fill": "linear-gradient(90deg, #008c4c, #52dda0)",
+      "fill_amber": "linear-gradient(90deg, #ffd23f, #f0c22e)",
+      "label_color": "#008c4c",
+      "label_weight": 700,
+      "label_size": "0.75rem"
+    },
+    "nav": {
+      "height": "68px",
+      "background": "rgba(22,50,30,0.92)",
+      "backdropFilter": "blur(16px)",
+      "borderBottom": "1px solid rgba(0,140,76,0.3)",
+      "position": "fixed",
+      "zIndex": 999,
+      "logo": {
+        "fontFamily": "'Playfair Display', serif",
+        "fontSize": "22px",
+        "fontWeight": 700,
+        "color": "#f7eacb",
+        "accent_color": "#ffd23f"
+      },
+      "links": {
+        "color": "rgba(247,234,203,0.65)",
+        "hover_color": "#f7eacb",
+        "active_color": "#f7eacb",
+        "active_indicator": "2px solid #52dda0 (bottom border)",
+        "fontSize": "0.875rem",
+        "fontWeight": 500,
+        "gap": "36px"
+      }
+    },
+    "modal": {
+      "overlay": "rgba(27,35,29,0.65)",
+      "background": "#ffffff",
+      "borderRadius": "20px",
+      "padding": "36px",
+      "maxWidth": "520px",
+      "shadow": "0 32px 80px rgba(27,35,29,0.25)",
+      "header": {
+        "borderBottom": "1px solid rgba(27,35,29,0.08)",
+        "paddingBottom": "20px",
+        "marginBottom": "24px"
+      },
+      "close_btn": {
+        "size": "32px",
+        "borderRadius": "8px",
+        "color": "rgba(27,35,29,0.4)",
+        "hover_bg": "rgba(27,35,29,0.06)"
+      }
+    },
+    "tooltip": {
+      "background": "#1b231d",
+      "color": "#f7eacb",
+      "fontSize": "0.75rem",
+      "fontWeight": 500,
+      "borderRadius": "6px",
+      "padding": "6px 10px",
+      "shadow": "0 4px 12px rgba(27,35,29,0.2)"
+    },
+    "dropdown": {
+      "background": "rgba(18,40,22,0.97)",
+      "border": "1px solid rgba(0,140,76,0.25)",
+      "borderRadius": "10px",
+      "shadow": "0 16px 40px rgba(0,0,0,0.4)",
+      "backdropFilter": "blur(20px)",
+      "item_padding": "10px 14px",
+      "item_radius": "6px",
+      "item_color": "rgba(247,234,203,0.6)",
+      "item_hover_bg": "rgba(247,234,203,0.06)",
+      "item_active_bg": "rgba(0,140,76,0.18)",
+      "item_active_color": "#f7eacb",
+      "divider": "1px solid rgba(247,234,203,0.07)"
+    },
+    "table": {
+      "header": {
+        "background": "rgba(27,35,29,0.03)",
+        "borderBottom": "1px solid rgba(27,35,29,0.1)",
+        "cellPadding": "12px 16px",
+        "fontSize": "0.6875rem",
+        "fontWeight": 700,
+        "letterSpacing": "0.08em",
+        "textTransform": "uppercase",
+        "color": "rgba(27,35,29,0.45)"
+      },
+      "row": {
+        "borderBottom": "1px solid rgba(27,35,29,0.06)",
+        "cellPadding": "14px 16px",
+        "fontSize": "0.875rem",
+        "hover_bg": "rgba(0,140,76,0.04)"
+      },
+      "row_selected": {
+        "background": "rgba(0,140,76,0.06)",
+        "borderLeft": "3px solid #008c4c"
+      }
+    },
+    "skeleton": {
+      "background": "rgba(27,35,29,0.07)",
+      "highlight": "rgba(27,35,29,0.11)",
+      "borderRadius": "8px",
+      "animation": "shimmer 1.4s ease infinite"
+    },
+    "empty_state": {
+      "_note": "Always: SVG illustration + title + body + optional CTA button",
+      "icon_size": "56px",
+      "icon_color": "rgba(27,35,29,0.18)",
+      "title_color": "rgba(27,35,29,0.5)",
+      "body_color": "rgba(27,35,29,0.35)"
+    }
+  },
+  "icons": {
+    "_rule": "Lucide React library only. Stroke-only (never filled). strokeWidth 1.5 standard, 2 for emphasis. Never use emoji as UI icons.",
+    "library": "lucide-react",
+    "stroke_default": "1.5",
+    "stroke_emphasis": "2",
+    "sizes": {
+      "xs": "14px",
+      "sm": "16px",
+      "md": "18px",
+      "lg": "22px",
+      "xl": "26px",
+      "2xl": "32px"
+    },
+    "colors": {
+      "on_light": "#1b231d",
+      "on_light_muted": "rgba(27,35,29,0.4)",
+      "on_dark": "#f7eacb",
+      "on_dark_muted": "rgba(247,234,203,0.45)",
+      "primary": "#008c4c",
+      "accent": "#ffd23f",
+      "mint": "#52dda0",
+      "danger": "#c0392b"
+    }
+  },
+  "patterns": {
+    "dot_grid": {
+      "css": "radial-gradient(circle, rgba(247,234,203,0.08) 1px, transparent 1px)",
+      "size": "18px 18px",
+      "use": "Card header dark panels, hero card backgrounds"
+    },
+    "diagonal_lines": {
+      "css": "repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(247,234,203,0.025) 40px, rgba(247,234,203,0.025) 41px)",
+      "use": "Dark section backgrounds — add over solid color for depth"
+    },
+    "grid_lines": {
+      "css": "linear-gradient(rgba(247,234,203,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(247,234,203,0.03) 1px, transparent 1px)",
+      "size": "56px 56px",
+      "use": "Hero section dot grid overlay"
+    },
+    "gradient_divider": {
+      "css": "linear-gradient(90deg, transparent, rgba(27,35,29,0.12) 30%, rgba(27,35,29,0.12) 70%, transparent)",
+      "height": "1px",
+      "use": "Between sections on cream backgrounds"
+    },
+    "aurora_bg": {
+      "description": "3 animated radial blobs layered at different opacities and positions for the hero background",
+      "blob_1": "rgba(0,140,76,0.35) — dominant green, top-center, 12s animation",
+      "blob_2": "rgba(82,221,160,0.18) — mint teal, bottom-right, 16s animation",
+      "blob_3": "rgba(255,210,63,0.08) — amber warmth, far-right, 10s animation",
+      "filter": "blur(50-70px)",
+      "use": "Hero section background only"
+    },
+    "noise_overlay": {
+      "opacity": "0.5",
+      "pointer_events": "none",
+      "use": "Large dark surface backgrounds for organic texture"
+    }
+  },
+  "sidebar": {
+    "_rule": "Used in BOTH student and admin dashboards. Same structural spec, same colors. Sidebar content (nav items) differs per surface.",
+    "width": "260px",
+    "width_collapsed": "64px",
+    "background": "#2f6b3f",
+    "transition": "width 0.3s ease",
+    "logo_area": {
+      "height": "68px",
+      "padding": "0 20px",
+      "borderBottom": "1px solid rgba(247,234,203,0.1)"
+    },
+    "nav_section_label": {
+      "fontSize": "0.625rem",
+      "fontWeight": 700,
+      "letterSpacing": "0.1em",
+      "textTransform": "uppercase",
+      "color": "rgba(247,234,203,0.3)",
+      "padding": "20px 20px 8px"
+    },
+    "nav_item": {
+      "height": "44px",
+      "padding": "0 14px",
+      "margin": "2px 8px",
+      "borderRadius": "8px",
+      "gap": "12px",
+      "color": "rgba(247,234,203,0.6)",
+      "fontSize": "0.875rem",
+      "fontWeight": 500,
+      "transition": "all 0.15s ease",
+      "hover_bg": "rgba(247,234,203,0.08)",
+      "hover_color": "#f7eacb",
+      "active_bg": "rgba(247,234,203,0.12)",
+      "active_color": "#f7eacb",
+      "active_indicator": "3px solid #52dda0 (left border)",
+      "icon_size": "18px",
+      "icon_color": "rgba(247,234,203,0.55)",
+      "icon_active": "#f7eacb"
+    },
+    "divider": "1px solid rgba(247,234,203,0.08)",
+    "user_footer": {
+      "borderTop": "1px solid rgba(247,234,203,0.08)",
+      "padding": "16px",
+      "name_color": "#f7eacb",
+      "name_size": "0.875rem",
+      "name_weight": 600,
+      "role_color": "rgba(247,234,203,0.45)",
+      "role_size": "0.75rem"
+    }
+  },
+  "topbar": {
+    "height": "60px",
+    "background": "#ffffff",
+    "borderBottom": "1px solid rgba(27,35,29,0.08)",
+    "padding": "0 24px",
+    "zIndex": 100,
+    "breadcrumb": {
+      "color": "rgba(27,35,29,0.4)",
+      "active_color": "#1b231d",
+      "separator": "/",
+      "fontSize": "0.8125rem"
+    },
+    "search": {
+      "width": "260px",
+      "background": "rgba(27,35,29,0.05)",
+      "border": "1px solid rgba(27,35,29,0.1)",
+      "borderRadius": "9999px",
+      "padding": "8px 14px",
+      "fontSize": "0.8125rem",
+      "placeholder": "rgba(27,35,29,0.35)"
+    },
+    "notification_btn": {
+      "size": "38px",
+      "borderRadius": "8px",
+      "hover_bg": "rgba(27,35,29,0.06)",
+      "dot_color": "#ffd23f",
+      "dot_size": "8px"
+    }
+  },
+  "student_dashboard": {
+    "_description": "Motivating, personal, progress-forward. The student should feel momentum and achievement at every glance.",
+    "sidebar_nav": [
+      {
+        "id": "home",
+        "label": "Dashboard",
+        "icon": "LayoutGrid"
+      },
+      {
+        "id": "my_paths",
+        "label": "My Paths",
+        "icon": "Map"
+      },
+      {
+        "id": "courses",
+        "label": "Courses",
+        "icon": "BookOpen"
+      },
+      {
+        "id": "challenges",
+        "label": "Challenges",
+        "icon": "Zap"
+      },
+      {
+        "id": "workshops",
+        "label": "Workshops",
+        "icon": "Video"
+      },
+      {
+        "id": "credentials",
+        "label": "My Credentials",
+        "icon": "Award"
+      },
+      {
+        "id": "community",
+        "label": "Community",
+        "icon": "Users"
+      },
+      {
+        "id": "leaderboard",
+        "label": "Leaderboard",
+        "icon": "Trophy"
+      }
+    ],
+    "home_layout": {
+      "grid": "12 columns, 20px gap",
+      "welcome_banner": "col-span-12",
+      "active_path": "col-span-8",
+      "streak_tracker": "col-span-4",
+      "stat_row": "col-span-12 — 4 equal cards",
+      "recent_activity": "col-span-7",
+      "upcoming": "col-span-5"
+    },
+    "widgets": {
+      "welcome_banner": {
+        "_note": "Personalized greeting. Dark green + aurora. Shows name, level badge, streak badge.",
+        "background": "#2f6b3f",
+        "gradient": "radial-gradient(ellipse 60% 80% at 85% 50%, rgba(0,140,76,0.4) 0%, transparent 65%)",
+        "borderRadius": "20px",
+        "padding": "32px",
+        "pattern": "dot_grid at 30% opacity",
+        "heading_color": "#f7eacb",
+        "heading_font": "display / section_md scale",
+        "streak_badge": "amber badge variant",
+        "level_badge": "mint / on_dark badge variant",
+        "cta_btn": "ghost_dark button variant sm"
+      },
+      "stat_card": {
+        "_note": "4 stats: XP Total · Lessons Completed · Current Streak · Rank",
+        "uses": "card.variants.stat",
+        "icon_bg_map": {
+          "xp": "rgba(255,210,63,0.12) with amber icon",
+          "lessons": "rgba(0,140,76,0.1) with primary icon",
+          "streak": "rgba(255,210,63,0.12) with amber icon",
+          "rank": "rgba(47,107,63,0.1) with mint icon"
+        },
+        "number_font": "typography.scale.stat_number",
+        "delta_positive": "#008c4c bg:rgba(0,140,76,0.08)",
+        "delta_negative": "#c0392b bg:rgba(192,57,43,0.08)"
+      },
+      "active_path_card": {
+        "_note": "Currently active path. Left green border. Shows path title, current module, progress bar, next CTA.",
+        "borderLeft": "4px solid #008c4c",
+        "next_module_bg": "rgba(0,140,76,0.05)",
+        "next_module_border": "1px solid rgba(0,140,76,0.12)",
+        "cta_btn": "primary button variant sm"
+      },
+      "streak_tracker": {
+        "_note": "7-day calendar grid. Shows consistency at a glance.",
+        "day_size": "36px",
+        "day_radius": "8px",
+        "done_bg": "#008c4c",
+        "done_color": "#f7eacb",
+        "today_bg": "rgba(0,140,76,0.15)",
+        "today_border": "2px solid #008c4c",
+        "today_color": "#008c4c",
+        "missed_bg": "rgba(27,35,29,0.07)",
+        "missed_color": "rgba(27,35,29,0.25)",
+        "flame_icon": "amber #ffd23f",
+        "streak_label_color": "#b8860b"
+      },
+      "xp_level_bar": {
+        "_note": "Full-width XP progress toward next level. Milestone dots in amber.",
+        "bar_fill": "linear-gradient(90deg, #008c4c, #52dda0)",
+        "track": "rgba(27,35,29,0.08)",
+        "milestone_dot": "#ffd23f",
+        "current_level_badge": "amber badge variant",
+        "next_level_label": "typography.scale.overline in muted"
+      },
+      "achievement_feed": {
+        "_note": "Last 3 earned credentials. Newest has amber glow.",
+        "item_bg": "rgba(255,210,63,0.07)",
+        "item_border": "1px solid rgba(255,210,63,0.18)",
+        "newest_shadow": "0 0 16px rgba(255,210,63,0.28)",
+        "icon_color": "#ffd23f"
+      },
+      "upcoming_challenge": {
+        "_note": "Next live challenge with countdown timer.",
+        "timer_color": "#b8860b",
+        "timer_bg": "rgba(255,210,63,0.1)",
+        "tag": "badge.variants.warning"
+      }
+    },
+    "course_player": {
+      "_note": "Full-screen lesson view. Sidebar tree left, content right.",
+      "sidebar_width": "280px",
+      "sidebar_bg": "#1d4228",
+      "progress_header": {
+        "background": "#2f6b3f",
+        "height": "52px",
+        "padding": "0 20px",
+        "progress_bar": "5px fill linear-gradient(90deg, #008c4c, #52dda0)"
+      },
+      "content_bg": "#f7eacb",
+      "module_states": {
+        "done": "filled circle #008c4c + checkmark #f7eacb",
+        "active": "ring 2px #008c4c + cream bg + primary text",
+        "locked": "opacity 0.4 + lock icon"
+      },
+      "next_btn": "primary button variant lg",
+      "code_block": "background #0d1f12, color #52dda0, font monospace"
+    },
+    "profile_page": {
+      "header_bg": "linear-gradient(135deg, #2f6b3f, #1d4228)",
+      "avatar_ring": "4px solid #ffd23f",
+      "stats_strip_bg": "rgba(247,234,203,0.08)",
+      "credential_grid": "3 cols on desktop, card.variants.on_dark, amber border on hover"
+    }
+  },
+  "admin_dashboard": {
+    "_description": "Data-dense, authoritative, in control. Cream backgrounds with white cards. Same sidebar as student but darker feeling via data density.",
+    "sidebar_nav": [
+      {
+        "id": "overview",
+        "label": "Overview",
+        "icon": "BarChart2",
+        "group": "main"
+      },
+      {
+        "id": "users",
+        "label": "Users",
+        "icon": "Users",
+        "group": "main"
+      },
+      {
+        "id": "courses",
+        "label": "Courses",
+        "icon": "BookOpen",
+        "group": "content"
+      },
+      {
+        "id": "paths",
+        "label": "Learning Paths",
+        "icon": "Layers",
+        "group": "content"
+      },
+      {
+        "id": "challenges",
+        "label": "Challenges",
+        "icon": "Zap",
+        "group": "content"
+      },
+      {
+        "id": "credentials",
+        "label": "Credentials",
+        "icon": "Award",
+        "group": "content"
+      },
+      {
+        "id": "analytics",
+        "label": "Analytics",
+        "icon": "TrendingUp",
+        "group": "data"
+      },
+      {
+        "id": "community",
+        "label": "Community",
+        "icon": "MessageSquare",
+        "group": "data"
+      },
+      {
+        "id": "settings",
+        "label": "Settings",
+        "icon": "Settings",
+        "group": "system"
+      }
+    ],
+    "overview_stats": [
+      {
+        "id": "total_users",
+        "label": "Total Builders",
+        "icon": "Users",
+        "icon_bg": "rgba(0,140,76,0.1)",
+        "icon_color": "#008c4c"
+      },
+      {
+        "id": "active_week",
+        "label": "Active This Week",
+        "icon": "Activity",
+        "icon_bg": "rgba(255,210,63,0.12)",
+        "icon_color": "#b8860b"
+      },
+      {
+        "id": "completions",
+        "label": "Path Completions",
+        "icon": "CheckCircle",
+        "icon_bg": "rgba(82,221,160,0.12)",
+        "icon_color": "#008c4c"
+      },
+      {
+        "id": "xp_issued",
+        "label": "Total XP Issued",
+        "icon": "Star",
+        "icon_bg": "rgba(47,107,63,0.1)",
+        "icon_color": "#2f6b3f"
+      }
+    ],
+    "home_layout": {
+      "grid": "12 columns, 20px gap",
+      "stat_row": "col-span-12 — 4 equal KPI cards",
+      "enrollment_chart": "col-span-8",
+      "xp_distribution": "col-span-4",
+      "user_table": "col-span-8",
+      "top_courses": "col-span-4",
+      "recent_activity": "col-span-12"
+    },
+    "charts": {
+      "_note": "All charts use the palette below in order. Never deviate.",
+      "series": [
+        "#008c4c",
+        "#52dda0",
+        "#ffd23f",
+        "#2f6b3f",
+        "#a3d9b8",
+        "#eeddb0"
+      ],
+      "grid_line": "rgba(27,35,29,0.06)",
+      "axis_text": "rgba(27,35,29,0.4)",
+      "axis_font": "'DM Sans', 0.75rem",
+      "tooltip_bg": "#1b231d",
+      "tooltip_text": "#f7eacb",
+      "chart_bg": "#ffffff",
+      "chart_border": "1px solid rgba(27,35,29,0.09)",
+      "chart_radius": "16px",
+      "chart_padding": "24px"
+    },
+    "user_table": {
+      "_note": "Full user management. Row click → detail drawer.",
+      "columns": [
+        "Name",
+        "Email",
+        "Level",
+        "XP",
+        "Streak",
+        "Enrolled Paths",
+        "Last Active",
+        "Status",
+        "Actions"
+      ],
+      "action_btn": {
+        "size": "30px",
+        "borderRadius": "6px",
+        "bg": "transparent",
+        "border": "1px solid rgba(27,35,29,0.12)",
+        "hover_bg": "rgba(27,35,29,0.06)"
+      },
+      "row_status_badges": {
+        "active": "badge.variants.success",
+        "inactive": "badge.variants.neutral",
+        "banned": "badge.variants.danger"
+      }
+    },
+    "course_builder": {
+      "_note": "Admin course editor. Drag-and-drop modules.",
+      "header_bg": "#2f6b3f",
+      "header_padding": "24px 32px",
+      "content_bg": "#f7eacb",
+      "module_card": "card.variants.default with drag handle",
+      "drag_handle_color": "rgba(27,35,29,0.25)",
+      "drag_active_border": "2px dashed #008c4c",
+      "drag_active_bg": "rgba(0,140,76,0.04)",
+      "status_badges": {
+        "draft": "badge.variants.warning",
+        "published": "badge.variants.success",
+        "archived": "badge.variants.neutral"
+      },
+      "publish_btn": "primary button variant md"
+    },
+    "credential_manager": {
+      "status_badges": {
+        "issued": "badge.variants.success",
+        "revoked": "badge.variants.danger",
+        "pending": "badge.variants.warning"
+      },
+      "on_chain_icon_color": "#008c4c",
+      "revoke_btn": "danger button variant sm",
+      "view_chain_btn": "secondary button variant sm"
+    },
+    "analytics_deep": {
+      "date_filter": "dropdown.variants + ghost_light button group",
+      "export_btn": "ghost_light button variant sm",
+      "chart_types_used": [
+        "line (time-series)",
+        "bar (comparisons)",
+        "donut (distributions)",
+        "area (cumulative)"
+      ]
+    }
+  },
+  "accessibility": {
+    "_rule": "All text must pass WCAG AA. All interactive elements must have visible focus states. Minimum 44px touch targets.",
+    "verified_passing": [
+      {
+        "fg": "#f7eacb",
+        "bg": "#2f6b3f",
+        "ratio": "8.2:1",
+        "level": "AAA"
+      },
+      {
+        "fg": "#f7eacb",
+        "bg": "#008c4c",
+        "ratio": "4.6:1",
+        "level": "AA"
+      },
+      {
+        "fg": "#1b231d",
+        "bg": "#f7eacb",
+        "ratio": "13.4:1",
+        "level": "AAA"
+      },
+      {
+        "fg": "#1b231d",
+        "bg": "#ffffff",
+        "ratio": "16.1:1",
+        "level": "AAA"
+      },
+      {
+        "fg": "#1b231d",
+        "bg": "#ffd23f",
+        "ratio": "9.1:1",
+        "level": "AAA"
+      },
+      {
+        "fg": "#f7eacb",
+        "bg": "#1d4228",
+        "ratio": "10.3:1",
+        "level": "AAA"
+      }
+    ],
+    "failing_avoid": [
+      {
+        "fg": "#008c4c",
+        "bg": "#2f6b3f",
+        "reason": "Both dark greens — fails contrast"
+      },
+      {
+        "fg": "#ffd23f",
+        "bg": "#f7eacb",
+        "reason": "Yellow on cream — fails"
+      },
+      {
+        "fg": "#52dda0",
+        "bg": "#2f6b3f",
+        "reason": "Mint on dark green — borderline, avoid for text"
+      }
+    ],
+    "focus_ring": "0 0 0 3px rgba(0,140,76,0.35)",
+    "min_touch_target": "44px",
+    "reduced_motion": "Wrap aurora, float, scan animations in @media (prefers-reduced-motion: no-preference)"
+  },
+  "do_dont": {
+    "do": [
+      "Use #f7eacb as the dominant background at ~60% visual coverage",
+      "Use #008c4c for every primary CTA button",
+      "Use #2f6b3f for sidebars, navbars, dark card tops, and dark sections",
+      "Use #ffd23f only for badges, XP earned, streak flames, and featured ribbons — max 1-2 instances per screen",
+      "Use Playfair Display for ALL headings, stat numbers, and the logo — nothing else",
+      "Use DM Sans for ALL UI text — buttons, labels, table cells, nav, body copy",
+      "Apply translateY(-5px) hover transform to interactive cards",
+      "Use the sidebar active indicator: 3px solid #52dda0 left border",
+      "Show XP numbers in Playfair Display 900 weight",
+      "Use lucide-react icons with strokeWidth 1.5 throughout",
+      "Apply dot-grid texture to dark card header panels",
+      "Use white (#ffffff) cards on cream backgrounds to create visual hierarchy"
+    ],
+    "dont": [
+      "Never introduce any color outside the defined palette — no blue, purple, pink, or other greens",
+      "Never use Inter, Roboto, or system fonts",
+      "Never use emoji as UI icons — always use Lucide SVG icons",
+      "Never put amber as a large background section color",
+      "Never put #008c4c text on #2f6b3f background — both are dark greens, fails contrast",
+      "Never set CSS custom properties (--var) inside React inline style objects",
+      "Never use 'continue' as a JavaScript object key — it is a reserved word",
+      "Never use pure black (#000000) or pure white unless it is a card surface",
+      "Never exceed 5% amber coverage on any screen",
+      "Never put dark text directly on the sidebar dark green without checking contrast",
+      "Never mix Playfair Display and DM Sans within a single text element"
+    ]
+  },
+  "routes": {
+    "_description": "Complete route-level design spec for all 10 student-facing pages. Each entry defines layout, key components, color application, and interaction patterns. Cross-reference component specs in 'components' and tokens in 'colors.semantic'.",
+    "landing": {
+      "path": "/",
+      "layout": "full_width_no_sidebar",
+      "nav": "transparent_to_frosted — starts transparent, gains backdrop-blur + rgba(22,50,30,0.92) on scroll",
+      "sections": {
+        "hero": {
+          "background": "colors.palette.green_hero (#0d1f12) + aurora_bg pattern + dot_grid overlay",
+          "min_height": "100vh",
+          "layout": "two_column — text left (55%), UI card right (45%)",
+          "text_side": {
+            "eyebrow_badge": "badge amber pill — '⬡ The #1 Solana Education Platform' with pulse dot",
+            "headline": "typography.scale.hero_xl, colors.text.on_dark — 'Your Path to [mint underline: Building] on Solana'",
+            "headline_accent_word": "color #52dda0, wavy SVG underline in same color",
+            "sub": "typography.scale.body_lg, colors.text.on_dark_muted",
+            "ctas": "row gap-14 — [primary btn lg 'Start Learning →'] [ghost_dark btn lg 'Explore Courses']",
+            "stats_row": "4 stats separated by 1px rgba(247,234,203,0.08) hairlines — value in display font, label in overline muted"
+          },
+          "card_side": {
+            "style": "card.variants.on_dark + hero_card_border animation",
+            "top_bar": "macOS dots + path label + menu lines",
+            "content": "trending path badge + course title + progress bar + 4 module rows with state indicators",
+            "floating_xp_badge": "position bottom-right, amber gradient bg, Playfair Display number, '+350 XP / Just earned' overline",
+            "floating_streak": "position mid-left, glass dark card, flame SVG icon in amber, '14-day streak'",
+            "live_count": "position top-right, pulsing mint dot + '1,204 learning now' label"
+          }
+        },
+        "social_proof_bar": {
+          "background": "colors.palette.cream_dark",
+          "height": "56px",
+          "content": "'Trusted by teams at' label + 1px divider + infinite marquee of partner logos",
+          "partner_chip": "background rgba(27,35,29,0.06), border light, abbr badge in secondary green, name in body_sm secondary"
+        },
+        "learning_paths": {
+          "background": "colors.palette.cream",
+          "layout": "section header left + 'Explore All' btn right + 3-col card grid",
+          "card": "components.card.variants.featured for middle card, default for others",
+          "card_header": "background green_secondary, dot_grid texture, level dots + tag badge + SVG icon + title + desc + stat row",
+          "card_body": "white bg, curriculum label, ProgressModule list, conditional progress bar, full-width CTA btn"
+        },
+        "features": {
+          "background": "colors.palette.green_secondary",
+          "pattern": "diagonal_lines overlay",
+          "layout": "centered header + 3x2 bordered grid",
+          "grid_border": "1px solid rgba(247,234,203,0.08) between cells",
+          "feature_cell": "SVG icon (FeatureSVGs) + numbered accent + title display_sm + desc body_sm on_dark_muted + meta overline"
+        },
+        "testimonials": {
+          "background": "colors.palette.cream_dark",
+          "layout": "header left (rating + stars right) + 3-col card grid",
+          "card": "card.variants.default, middle card uses card.variants.on_dark (dark featured)",
+          "stars": "#ffd23f ★ × 5"
+        },
+        "cta_banner": {
+          "background": "colors.palette.green_primary",
+          "pattern": "hero_radial gradient overlay",
+          "layout": "text left + two buttons right",
+          "btn_1": "amber button variant lg",
+          "btn_2": "ghost_dark button variant lg"
+        },
+        "footer": {
+          "background": "colors.palette.charcoal (#1b231d)",
+          "layout": "1.8fr brand col + 4 × 1fr link cols",
+          "brand_col": "logo + tagline + newsletter input group + 4 social icon btns (X, Discord, GitHub, YouTube)",
+          "newsletter": "dark input + primary green subscribe button",
+          "link_cols": "overline heading + list of text links in on_dark_muted",
+          "bottom_bar": "copyright left + green pulsing status dot right"
+        }
+      }
+    },
+    "course_catalog": {
+      "path": "/courses",
+      "layout": "full_width_no_sidebar",
+      "page_background": "colors.palette.cream",
+      "sections": {
+        "page_header": {
+          "background": "colors.palette.green_secondary",
+          "pattern": "diagonal_lines",
+          "padding": "4rem 5%",
+          "headline": "typography.scale.section_lg on_dark",
+          "sub": "typography.scale.body_lg on_dark_muted",
+          "search_bar": {
+            "width": "520px centered",
+            "style": "components.input.on_dark variant, pill border-radius, search icon left, keyboard shortcut badge right",
+            "placeholder": "'Search courses, topics, or skills…'"
+          }
+        },
+        "filter_bar": {
+          "background": "#ffffff",
+          "border_bottom": "colors.borders.light",
+          "position": "sticky top-68px (below nav)",
+          "height": "56px",
+          "padding": "0 5%",
+          "filter_chips": {
+            "style": "pill badge variant ghost_light — inactive: neutral badge, active: primary green filled",
+            "groups": [
+              "Difficulty: Beginner / Intermediate / Advanced",
+              "Topic: DeFi / NFTs / Gaming / Infra",
+              "Duration: < 2h / 2–5h / 5h+",
+              "Format: Course / Path / Challenge"
+            ],
+            "active_indicator": "background #008c4c, color #f7eacb, no border"
+          },
+          "sort_dropdown": "ghost_light btn sm + dropdown component right-aligned",
+          "results_count": "typography.scale.body_sm secondary — 'Showing 34 courses'"
+        },
+        "learning_paths_row": {
+          "label": "overline 'Curated Learning Paths'",
+          "layout": "horizontal scroll row of 3 path cards on desktop, scrollable on mobile",
+          "path_card": "card.variants.featured — dark header (green_secondary) + white body, same spec as landing page learning_paths cards"
+        },
+        "course_grid": {
+          "columns": "repeat(3, 1fr) desktop — repeat(2,1fr) tablet — 1fr mobile",
+          "gap": "24px",
+          "card": {
+            "style": "card.variants.default with hover",
+            "thumbnail": "16:9 ratio, borderRadius 12px 12px 0 0, object-fit cover",
+            "difficulty_badge": "positioned top-right on thumbnail — beginner/intermediate/advanced badge variant",
+            "body_padding": "20px",
+            "title": "typography.scale.card_title charcoal",
+            "description": "typography.scale.body_sm secondary, 2-line clamp",
+            "meta_row": "icon + text pairs: clock (duration), book (lessons), star (XP) — body_xs muted",
+            "instructor_row": "avatar xs + name body_sm + verified mint badge if applicable",
+            "progress_bar": "shown only if enrolled — components.progress_bar with percentage label",
+            "footer": "border-top colors.borders.light, padding-top 14px — [difficulty badge] [enroll/continue btn sm]",
+            "enrolled_state": {
+              "border": "1.5px solid rgba(0,140,76,0.3)",
+              "progress_fill": "components.progress_bar.fill",
+              "cta_text": "Continue →",
+              "cta_variant": "secondary button sm"
+            },
+            "not_enrolled_state": {
+              "cta_text": "Enroll Free",
+              "cta_variant": "primary button sm"
+            }
+          }
+        },
+        "empty_state": {
+          "shown_when": "no results match filters",
+          "style": "components.empty_state centered in grid area",
+          "icon": "Search lucide xl muted",
+          "title": "'No courses match your filters'",
+          "body": "'Try adjusting the difficulty or topic filters'",
+          "cta": "ghost_light btn 'Clear all filters'"
+        }
+      }
+    },
+    "course_detail": {
+      "path": "/courses/[slug]",
+      "layout": "full_width_no_sidebar",
+      "page_background": "colors.palette.cream",
+      "sections": {
+        "course_header": {
+          "background": "colors.palette.green_secondary",
+          "pattern": "diagonal_lines + hero_radial glow",
+          "padding": "5rem 5%",
+          "layout": "two_column — meta left (60%) + enrollment card right (40%)",
+          "left_side": {
+            "breadcrumb": "Courses > [Topic] — on_dark_dim overline",
+            "difficulty_badge": "badge variant matching difficulty",
+            "title": "typography.scale.section_lg on_dark",
+            "description": "typography.scale.body_lg on_dark_muted, max 3 lines",
+            "meta_row": "4 items with Lucide icons: duration, lessons, enrolled count, XP reward — on_dark_muted body_sm",
+            "instructor": "avatar md + name label_md on_dark + role body_sm on_dark_dim + verified badge"
+          },
+          "right_side": {
+            "style": "card.variants.on_dark, min-width 320px",
+            "xp_highlight": "large Playfair stat_number amber + 'XP to earn' overline on_dark_dim",
+            "progress_section": "shown if enrolled — progress bar + '% complete' label + 'Continue' primary btn",
+            "enroll_section": "shown if not enrolled — 'Free Forever' pill badge + primary btn lg 'Enroll Now' + ghost_dark btn 'Preview'",
+            "includes_list": "checklist items with mint checkmark SVG — e.g. '22 lessons', 'Certificate on completion', 'Lifetime access'"
+          }
+        },
+        "course_body": {
+          "layout": "two_column sticky — content (65%) + sidebar (35%)",
+          "content_side": {
+            "what_youll_learn": "card.variants.default, 2-col list with mint checkmark icons",
+            "module_accordion": {
+              "module_header": "background rgba(27,35,29,0.03), border-bottom light, padding 16px 20px — expand chevron + module title + lesson count + duration",
+              "lesson_row": {
+                "padding": "12px 20px 12px 44px",
+                "border_bottom": "colors.borders.light",
+                "icon_done": "filled circle green_primary + white checkmark",
+                "icon_active": "ring 1.5px green_primary + small filled dot center",
+                "icon_locked": "lock icon muted",
+                "icon_free": "play icon on_dark_dim",
+                "title_active": "label_md green_primary",
+                "title_done": "label_md secondary strikethrough: none",
+                "title_locked": "label_md disabled",
+                "meta": "body_xs muted — duration + lesson type badge (Video / Code / Quiz)"
+              }
+            },
+            "reviews": "card.variants.default, star rating summary + 3 static review cards"
+          },
+          "sticky_sidebar": {
+            "position": "sticky top 84px",
+            "style": "card.variants.default shadow md",
+            "content": "course thumbnail + xp reward + enroll/continue btn + includes list"
+          }
+        }
+      }
+    },
+    "lesson_view": {
+      "path": "/courses/[slug]/lessons/[id]",
+      "layout": "full_viewport_no_nav_footer",
+      "background": "colors.palette.cream",
+      "header": {
+        "height": "52px",
+        "background": "colors.palette.green_secondary",
+        "left": "back arrow + course title (on_dark_muted) + '/' + lesson title (on_dark)",
+        "center": "progress bar 5px — track rgba(247,234,203,0.2), fill linear-gradient(90deg,#008c4c,#52dda0) — with '12/22 lessons' label",
+        "right": "XP pill badge amber + close/exit btn icon_only"
+      },
+      "split_layout": {
+        "left_pane": {
+          "default_width": "55%",
+          "min_width": "30%",
+          "background": "colors.palette.cream",
+          "padding": "32px 40px",
+          "content": {
+            "lesson_type_badge": "overline badge — Video / Reading / Code Challenge",
+            "title": "typography.scale.section_md charcoal",
+            "markdown_body": {
+              "h2": "display font 700 1.25rem charcoal",
+              "h3": "display font 700 1.1rem charcoal",
+              "p": "body_md 1.72 lineheight",
+              "code_inline": "background rgba(27,35,29,0.08) borderRadius 4px padding 2px 6px monospace",
+              "code_block": "background #0d1f12, color #52dda0, monospace, borderRadius 12px, padding 20px 24px",
+              "blockquote": "border-left 3px solid #008c4c, padding-left 16px, color secondary",
+              "ul_li": "mint dot marker #52dda0",
+              "strong": "font-weight 600 charcoal"
+            }
+          },
+          "hints_section": {
+            "toggle_btn": "ghost_light btn sm with ChevronDown icon — 'Show Hint (1 of 3)'",
+            "revealed_hint": "card on_dark bg rgba(0,140,76,0.07) border primary light, body_sm",
+            "solution_toggle": "warning badge btn — 'Reveal Solution' — only shown after 3 hints used"
+          },
+          "bottom_nav": {
+            "height": "64px",
+            "border_top": "colors.borders.light",
+            "left": "ghost_light btn '← Previous'",
+            "center": "overline muted 'Module 3 of 6'",
+            "right": "primary btn 'Next Lesson →' or 'Complete & Continue →' on last lesson of module",
+            "complete_state": "primary btn becomes amber btn when marking complete, then back to primary for Next"
+          }
+        },
+        "resize_handle": {
+          "width": "6px",
+          "background": "rgba(27,35,29,0.08)",
+          "hover_bg": "#008c4c",
+          "cursor": "col-resize"
+        },
+        "right_pane": {
+          "default_width": "45%",
+          "min_width": "30%",
+          "background": "#0d1f12",
+          "layout": "editor_top + output_bottom split",
+          "editor": {
+            "background": "#0d1f12",
+            "top_bar": {
+              "background": "rgba(247,234,203,0.05)",
+              "border_bottom": "1px solid rgba(247,234,203,0.08)",
+              "file_tabs": "body_xs on_dark_muted, active tab has rgba(247,234,203,0.1) bg + 2px green_mint bottom border",
+              "right_actions": "Reset icon_only btn on_dark + Run btn primary sm"
+            },
+            "line_numbers": "rgba(247,234,203,0.2)",
+            "cursor": "#52dda0"
+          },
+          "output_panel": {
+            "default_height": "180px",
+            "min_height": "80px",
+            "background": "#0a1a0e",
+            "border_top": "1px solid rgba(247,234,203,0.08)",
+            "header": "overline on_dark_dim 'OUTPUT' + clear btn icon_only",
+            "states": {
+              "idle": "on_dark_dim italic body_xs — 'Run your code to see output'",
+              "running": "mint pulsing dot + 'Running...' on_dark_muted",
+              "success": "success badge 'All tests passed' + output lines in #52dda0 monospace",
+              "error": "danger badge 'Error' + error message in #ff6b6b monospace",
+              "test_cases": "per-test row: pass (✓ mint) / fail (✗ red) + test name + expected/actual"
+            }
+          }
+        }
+      },
+      "completion_celebration": {
+        "trigger": "on lesson marked complete",
+        "overlay": "brief 600ms burst animation — mint particles + '+XP' number flies up in Playfair amber",
+        "toast": "bottom-right toast card on_dark — amber XP badge + 'Lesson Complete!' + 'Next: [title]' link"
+      }
+    },
+    "code_challenge": {
+      "path": "/challenges/[slug]",
+      "layout": "full_viewport_no_nav_footer",
+      "description": "Standalone challenge page, same split layout as lesson_view but challenge-optimized.",
+      "header": {
+        "height": "52px",
+        "background": "colors.palette.green_secondary",
+        "left": "← Challenges + challenge title",
+        "center": "difficulty badge + XP reward amber pill",
+        "right": "timer (if timed) in amber + submit btn primary sm"
+      },
+      "left_pane": {
+        "tabs": "tab bar — [Prompt] [Test Cases] [Leaderboard]",
+        "tab_active": "border-bottom 2px #008c4c, color primary, bg transparent",
+        "tab_inactive": "color muted, bg transparent",
+        "prompt_tab": {
+          "challenge_title": "typography.scale.section_md",
+          "objective_box": "card info variant — 'Your Goal:' overline + objective body_md",
+          "expected_output": "code_block style — shows expected stdout/return",
+          "constraints": "ul list with mint markers",
+          "xp_reward": "large amber stat_number + 'XP on completion' label"
+        },
+        "test_cases_tab": {
+          "test_row": {
+            "padding": "12px 16px",
+            "border": "colors.borders.light",
+            "border_radius": "8px",
+            "margin_bottom": "8px",
+            "pass_state": "left border 3px solid #008c4c, bg rgba(0,140,76,0.04)",
+            "fail_state": "left border 3px solid #c0392b, bg rgba(192,57,43,0.04)",
+            "pending_state": "left border 3px solid rgba(27,35,29,0.15), bg transparent",
+            "label": "label_sm — 'Test 1: Basic case'",
+            "input_output": "monospace body_xs muted — 'Input: … → Expected: …'"
+          }
+        }
+      },
+      "right_pane": "same as lesson_view.right_pane",
+      "submit_flow": {
+        "run_btn": "primary btn — changes to loading spinner state on click",
+        "loading_state": "btn disabled + spinner + 'Running tests…' label",
+        "all_pass_state": {
+          "output_bg": "rgba(0,140,76,0.08)",
+          "banner": "full-width mint success banner + 'All 5 tests passed!'",
+          "submit_btn": "amber btn lg 'Claim +450 XP →' appears"
+        },
+        "claim_animation": "XP number animates up in Playfair Display amber, confetti-style mint + amber particles"
+      }
+    },
+    "user_dashboard": {
+      "path": "/dashboard",
+      "layout": "sidebar_left + topbar + main_content",
+      "sidebar": "components.sidebar (student nav)",
+      "topbar": "components.topbar",
+      "main_background": "colors.palette.cream",
+      "main_padding": "24px",
+      "grid": "12 columns 20px gap",
+      "widgets": {
+        "welcome_banner": {
+          "grid": "col-span-12",
+          "spec": "student_dashboard.widgets.welcome_banner"
+        },
+        "stat_row": {
+          "grid": "col-span-12",
+          "layout": "4 equal card.variants.stat",
+          "stats": [
+            {
+              "id": "xp",
+              "label": "Total XP",
+              "icon": "Star",
+              "icon_bg": "rgba(255,210,63,0.12)",
+              "icon_color": "#b8860b"
+            },
+            {
+              "id": "lessons",
+              "label": "Lessons Done",
+              "icon": "BookOpen",
+              "icon_bg": "rgba(0,140,76,0.1)",
+              "icon_color": "#008c4c"
+            },
+            {
+              "id": "streak",
+              "label": "Day Streak",
+              "icon": "Flame",
+              "icon_bg": "rgba(255,210,63,0.12)",
+              "icon_color": "#b8860b"
+            },
+            {
+              "id": "rank",
+              "label": "Global Rank",
+              "icon": "Trophy",
+              "icon_bg": "rgba(47,107,63,0.1)",
+              "icon_color": "#2f6b3f"
+            }
+          ]
+        },
+        "active_paths": {
+          "grid": "col-span-8",
+          "style": "card.variants.default",
+          "title": "card_title + 'Resume →' ghost link right",
+          "path_row": {
+            "layout": "icon 44px + meta col + progress bar right",
+            "icon_bg": "green_secondary, PathSVG icon",
+            "progress_bar": "components.progress_bar with percentage",
+            "next_lesson": "body_xs muted '▶ Next: [lesson title]'",
+            "separator": "colors.borders.light hairline"
+          }
+        },
+        "streak_tracker": {
+          "grid": "col-span-4",
+          "spec": "student_dashboard.widgets.streak_tracker",
+          "shows": "current week 7-day grid + streak count + longest streak record"
+        },
+        "xp_level_progress": {
+          "grid": "col-span-12",
+          "style": "card.variants.default",
+          "layout": "level badge left + XP bar (with milestone dots) + next level right",
+          "spec": "student_dashboard.widgets.xp_level_bar"
+        },
+        "recent_achievements": {
+          "grid": "col-span-5",
+          "style": "card.variants.default",
+          "title": "card_title + 'View All' link",
+          "item": "achievement icon 40px amber bg + title label_md + date body_xs muted",
+          "newest_glow": "0 0 16px rgba(255,210,63,0.28)"
+        },
+        "recommended_courses": {
+          "grid": "col-span-7",
+          "style": "card.variants.default",
+          "title": "card_title",
+          "course_row": "thumbnail 56×40 rounded-8 + title body_sm + difficulty badge + XP pill + Enroll btn secondary sm"
+        },
+        "activity_feed": {
+          "grid": "col-span-12",
+          "style": "card.variants.default",
+          "title": "card_title + filter tabs (All / Completed / XP / Achievements)",
+          "item": "card.variants.activity — left border color by type",
+          "types": {
+            "lesson_complete": "border #008c4c, icon BookOpen primary",
+            "xp_earned": "border #ffd23f, icon Star amber",
+            "badge_earned": "border #ffd23f, icon Award amber",
+            "challenge_won": "border #52dda0, icon Zap mint",
+            "path_complete": "border #008c4c, icon CheckCircle primary"
+          }
+        }
+      }
+    },
+    "user_profile": {
+      "path": "/profile and /profile/[username]",
+      "layout": "full_width_no_sidebar (public view) / sidebar_left + topbar (own profile)",
+      "sections": {
+        "profile_header": {
+          "background": "linear-gradient(135deg, #2f6b3f, #1d4228)",
+          "pattern": "diagonal_lines at 20% opacity",
+          "padding": "3rem 5%",
+          "layout": "avatar left + info center + actions right",
+          "avatar": {
+            "size": "components.avatar.sizes.xl (72px)",
+            "ring": "4px solid #ffd23f",
+            "online_dot": "10px circle #52dda0, position bottom-right of avatar"
+          },
+          "name": "typography.scale.section_md on_dark",
+          "handle": "body_sm on_dark_muted '@username'",
+          "bio": "body_md on_dark_muted max 2 lines",
+          "meta_row": "join date + location + social links — body_xs on_dark_dim with Lucide icons",
+          "badges_row": "3 most recent achievement badges 32px with tooltip",
+          "actions_own": "[Edit Profile btn ghost_dark sm] [Settings icon btn]",
+          "actions_other": "[Follow btn primary sm] [Message btn ghost_dark sm]",
+          "stats_strip": {
+            "background": "rgba(247,234,203,0.08)",
+            "border_top": "rgba(247,234,203,0.12)",
+            "items": "XP Total · Lessons Completed · Paths Finished · Certificates — Playfair stat_sm + overline label"
+          }
+        },
+        "profile_body": {
+          "layout": "two_column — left (65%) content + right (35%) sidebar",
+          "left_col": {
+            "skill_radar": {
+              "style": "card.variants.default",
+              "chart_axes": [
+                "Rust",
+                "Anchor",
+                "Frontend",
+                "DeFi",
+                "Security",
+                "Testing"
+              ],
+              "fill_color": "rgba(0,140,76,0.2)",
+              "stroke_color": "#008c4c",
+              "grid_color": "rgba(27,35,29,0.08)",
+              "label_font": "DM Sans 0.75rem"
+            },
+            "credentials_grid": {
+              "style": "card.variants.default",
+              "title": "'On-chain Credentials'",
+              "credential_card": {
+                "style": "card.variants.on_dark — dark glass",
+                "border_hover": "1px solid rgba(255,210,63,0.4)",
+                "badge_image": "80px rounded-12, mint/green gradient bg with SVG icon",
+                "track_badge": "overline badge",
+                "verify_link": "body_xs mint 'View on Solana Explorer →' with ExternalLink icon"
+              }
+            },
+            "completed_courses": {
+              "style": "card.variants.default",
+              "course_row": "thumbnail 48x36 + title label_md + completion date body_xs muted + completion badge success"
+            }
+          },
+          "right_col": {
+            "current_streak": "card.variants.default — streak_tracker widget compact",
+            "recent_activity": "card.variants.default — activity_feed compact last 5 items",
+            "public_toggle": "card.variants.default — 'Profile Visibility' toggle switch (green when public)",
+            "share_profile": "card.variants.default — copy link btn + social share btns"
+          }
+        }
+      }
+    },
+    "leaderboard": {
+      "path": "/leaderboard",
+      "layout": "full_width_no_sidebar",
+      "page_background": "colors.palette.cream",
+      "sections": {
+        "page_header": {
+          "background": "colors.palette.green_secondary",
+          "pattern": "diagonal_lines",
+          "padding": "3rem 5%",
+          "headline": "typography.scale.section_lg on_dark 'Global Leaderboard'",
+          "sub": "body_lg on_dark_muted"
+        },
+        "top_3_podium": {
+          "layout": "centered row — 2nd (left, shorter) · 1st (center, tallest) · 3rd (right)",
+          "podium_card": {
+            "rank_1": {
+              "height": "180px",
+              "background": "linear-gradient(180deg, rgba(255,210,63,0.15), rgba(255,210,63,0.05))",
+              "border": "2px solid rgba(255,210,63,0.5)",
+              "crown_icon": "amber above avatar",
+              "avatar_ring": "3px solid #ffd23f",
+              "rank_badge": "#ffd23f bg charcoal text '1'"
+            },
+            "rank_2": {
+              "height": "148px",
+              "background": "rgba(163,217,184,0.08)",
+              "border": "1.5px solid rgba(163,217,184,0.3)",
+              "avatar_ring": "3px solid #a3d9b8"
+            },
+            "rank_3": {
+              "height": "128px",
+              "background": "rgba(163,113,65,0.08)",
+              "border": "1.5px solid rgba(163,113,65,0.25)",
+              "avatar_ring": "3px solid #a37141"
+            },
+            "shared": "avatar md + name label_md + XP stat_sm display font + level badge"
+          }
+        },
+        "filter_bar": {
+          "layout": "tab group left + filter chips right",
+          "time_tabs": "All Time / This Month / This Week — ghost_light btn group, active = primary filled",
+          "filter_chips": "Course filter dropdown + Country filter dropdown"
+        },
+        "rankings_table": {
+          "style": "card.variants.default overflow-hidden",
+          "header": "components.table.header",
+          "columns": ["Rank", "User", "Level", "XP", "Streak", "Paths Done"],
+          "row": {
+            "style": "components.table.row",
+            "rank_col": "Playfair Display 700 1rem charcoal, top-3 use colored badges",
+            "user_col": "avatar sm + name label_md + handle body_xs muted",
+            "level_col": "badge variant matching level",
+            "xp_col": "Playfair Display 600 charcoal",
+            "streak_col": "amber Flame icon + number",
+            "current_user_row": "components.table.row_selected — left border primary, bg rgba(0,140,76,0.06)"
+          },
+          "load_more": "ghost_light btn full-width 'Load More' at bottom"
+        }
+      }
+    },
+    "settings": {
+      "path": "/settings",
+      "layout": "sidebar_left + topbar + main_content",
+      "sidebar": "components.sidebar (student nav, settings active)",
+      "main_layout": "settings_nav (left 220px) + settings_content (right flex)",
+      "settings_nav": {
+        "background": "#ffffff",
+        "border_right": "colors.borders.light",
+        "item": "height 40px, padding 0 16px, borderRadius 6px, hover rgba(0,140,76,0.06), active rgba(0,140,76,0.1) text primary",
+        "sections": ["Profile", "Account", "Preferences", "Privacy & Data"]
+      },
+      "panels": {
+        "profile_editing": {
+          "style": "card.variants.default",
+          "avatar_upload": "avatar xl + 'Change Photo' btn ghost_light sm + 'Remove' text link danger",
+          "form_fields": [
+            "Display Name",
+            "Username (handle)",
+            "Bio (textarea)",
+            "Location",
+            "Website",
+            "Twitter",
+            "GitHub"
+          ],
+          "field_style": "components.input.base stacked with label_sm above",
+          "save_btn": "primary btn md 'Save Changes' — right-aligned"
+        },
+        "account_management": {
+          "sections": {
+            "email": "current email displayed + 'Change Email' btn secondary sm",
+            "password": "ghost_light btn 'Change Password'",
+            "connected_wallets": {
+              "wallet_row": "wallet icon + truncated address + 'Primary' badge success + 'Disconnect' btn danger sm",
+              "add_wallet_btn": "secondary btn '+ Connect Wallet'"
+            },
+            "connected_accounts": {
+              "provider_row": "provider logo 24px + name label_md + connected status badge + 'Disconnect' btn",
+              "providers": ["Google", "GitHub"],
+              "connect_btn": "ghost_light btn '+ Connect'"
+            },
+            "danger_zone": {
+              "background": "rgba(192,57,43,0.04)",
+              "border": "1px solid rgba(192,57,43,0.2)",
+              "borderRadius": "12px",
+              "padding": "20px",
+              "title": "label_md danger",
+              "delete_btn": "danger btn sm 'Delete Account'"
+            }
+          }
+        },
+        "preferences": {
+          "language_selector": "dropdown component — EN / ES / PT with flag SVGs",
+          "theme_toggle": "toggle switch row — Light / Dark (Dark = future feature, show as 'Coming Soon' badge)",
+          "notification_toggles": {
+            "row_style": "flex justify-between items-center border-bottom light padding 16px 0",
+            "toggle": "36×20px pill, background #008c4c when on, rgba(27,35,29,0.2) when off",
+            "items": [
+              "Email: New course releases",
+              "Email: Streak reminders",
+              "Email: Weekly digest",
+              "Push: Lesson reminders",
+              "Push: Challenge opens"
+            ]
+          }
+        },
+        "privacy_data": {
+          "visibility_toggle": "card.variants.default — Public Profile toggle",
+          "data_export": "ghost_light btn 'Export My Data' + body_sm muted description",
+          "enrolled_courses_visibility": "toggle per-course or global"
+        }
+      }
+    },
+    "certificate_view": {
+      "path": "/certificates/[id]",
+      "layout": "full_width_centered_no_sidebar",
+      "page_background": "colors.palette.green_hero (#0d1f12)",
+      "sections": {
+        "certificate_display": {
+          "max_width": "720px centered",
+          "certificate_card": {
+            "background": "linear-gradient(145deg, #2f6b3f 0%, #1d4228 50%, #0d1f12 100%)",
+            "border": "1px solid rgba(247,234,203,0.15)",
+            "borderRadius": "24px",
+            "padding": "56px 48px",
+            "pattern": "dot_grid at 15% opacity",
+            "corner_ornaments": "SVG geometric corner marks in rgba(247,234,203,0.15)",
+            "layout": "centered vertical stack",
+            "elements": [
+              "Academy logo wordmark — Playfair Display on_dark + amber accent word",
+              "Overline 'Certificate of Completion' in on_dark_dim",
+              "Divider line rgba(247,234,203,0.12)",
+              "'This certifies that' body_md on_dark_muted",
+              "Recipient name — typography.scale.hero_xl on_dark Playfair (animates in)",
+              "'has successfully completed' body_md on_dark_muted",
+              "Course title — typography.scale.section_md amber",
+              "Date row — calendar icon + formatted date — body_sm on_dark_dim",
+              "Divider",
+              "Bottom row: XP earned amber badge + difficulty badge + duration badge",
+              "Signature line — 'Superteam Academy' in Playfair italic on_dark_muted"
+            ],
+            "seal": {
+              "position": "bottom-right, 80px circle",
+              "background": "linear-gradient(135deg, #ffd23f, #f0c22e)",
+              "content": "Academy monogram 'SA' in Playfair 900 charcoal",
+              "shadow": "shadows.amber"
+            }
+          }
+        },
+        "on_chain_section": {
+          "style": "card.variants.on_dark max-width 720px mt 24px",
+          "layout": "two_column — nft details left, verification right",
+          "nft_details": {
+            "title": "label_md on_dark 'NFT Details'",
+            "rows": [
+              "Mint Address — monospace body_xs on_dark_muted + copy icon btn",
+              "Network — 'Solana Mainnet' with Solana logo 16px",
+              "Owner — truncated wallet + copy icon",
+              "Token Standard — 'cNFT (Compressed)' info badge"
+            ]
+          },
+          "verification": {
+            "verify_btn": "primary btn 'View on Solana Explorer' + ExternalLink icon",
+            "verify_note": "body_xs on_dark_dim 'Independently verify this credential on-chain'"
+          }
+        },
+        "sharing_actions": {
+          "style": "flex row gap-12 centered mt 24px",
+          "download_btn": "ghost_dark btn lg 'Download Certificate' + Download icon",
+          "share_btns": [
+            "ghost_dark btn sm 'Share on X'",
+            "ghost_dark btn sm 'Share on LinkedIn'",
+            "icon_only btn 'Copy Link'"
+          ]
+        }
+      }
+    }
+  }
+}
