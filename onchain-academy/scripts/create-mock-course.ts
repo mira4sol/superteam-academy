@@ -1,25 +1,25 @@
-import * as anchor from "@coral-xyz/anchor";
-import { Program } from "@coral-xyz/anchor";
-import { OnchainAcademy } from "../target/types/onchain_academy";
-import { PublicKey, SystemProgram } from "@solana/web3.js";
+import * as anchor from '@coral-xyz/anchor'
+import { Program } from '@coral-xyz/anchor'
+import { PublicKey, SystemProgram } from '@solana/web3.js'
+import { OnchainAcademy } from '../target/types/onchain_academy'
 
-const provider = anchor.AnchorProvider.env();
-anchor.setProvider(provider);
-const program = anchor.workspace.onchainAcademy as Program<OnchainAcademy>;
+const provider = anchor.AnchorProvider.env()
+anchor.setProvider(provider)
+const program = anchor.workspace.onchainAcademy as Program<OnchainAcademy>
 
 const [configPda] = PublicKey.findProgramAddressSync(
-  [Buffer.from("config")],
-  program.programId
-);
+  [Buffer.from('config')],
+  program.programId,
+)
 
-const courseId = "solana-mock-test";
+const courseId = 'demo-course'
 const [coursePda] = PublicKey.findProgramAddressSync(
-  [Buffer.from("course"), Buffer.from(courseId)],
-  program.programId
-);
+  [Buffer.from('course'), Buffer.from(courseId)],
+  program.programId,
+)
 
 // Placeholder content tx ID — replace with a real Arweave tx for production
-const contentTxId = Buffer.alloc(32);
+const contentTxId = Buffer.alloc(32)
 
 async function main() {
   const tx = await program.methods
@@ -42,11 +42,11 @@ async function main() {
       authority: provider.wallet.publicKey,
       systemProgram: SystemProgram.programId,
     })
-    .rpc();
+    .rpc()
 
-  console.log("Course created:", courseId);
-  console.log("Course PDA:", coursePda.toBase58());
-  console.log("Tx:", tx);
+  console.log('Course created:', courseId)
+  console.log('Course PDA:', coursePda.toBase58())
+  console.log('Tx:', tx)
 }
 
-main().catch(console.error);
+main().catch(console.error)
