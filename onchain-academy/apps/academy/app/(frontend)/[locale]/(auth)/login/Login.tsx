@@ -443,8 +443,6 @@ function OnboardingStep({
         }),
       })
 
-      console.log('res', res)
-
       if (!res.ok) {
         const data = await res
           .json()
@@ -835,8 +833,7 @@ const Login = () => {
   useEffect(() => {
     if (isPending) return
     if (session?.user) {
-      const user = session.user as Record<string, unknown>
-      console.log('session user', user)
+      const user = session.user
       if (user.onboardingComplete) {
         router.replace('/en/dashboard')
       } else {
