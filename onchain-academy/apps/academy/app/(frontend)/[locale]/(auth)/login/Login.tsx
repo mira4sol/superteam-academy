@@ -1,6 +1,10 @@
 'use client'
 
+import { signIn, useSession } from '@/libs/auth-client'
 import { truncateAddress } from '@/libs/string'
+import { useWallet } from '@solana/wallet-adapter-react'
+import { useWalletModal } from '@solana/wallet-adapter-react-ui'
+import bs58 from 'bs58'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   ArrowRight,
@@ -12,7 +16,8 @@ import {
   Wallet,
   Zap,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
 
 // ─── Types ──────────────────────────────────────────────────────
 
@@ -87,15 +92,103 @@ function SocialInput({
 
 // ─── Step 0: Auth Method Selection ──────────────────────────────
 
-function AuthStep({ onSelect }: { onSelect: (method: AuthMethod) => void }) {
+function AuthStep({
+  onSelect,
+  onWalletAuth,
+}: {
+  onSelect: (method: AuthMethod) => void
+  onWalletAuth: () => void
+}) {
   const [loading, setLoading] = useState<AuthMethod>(null)
+  const [error, setError] = useState<string | null>(null)
+  const { connected, publicKey, signMessage, disconnect } = useWallet()
+  const { setVisible } = useWalletModal()
 
-  const handleSelect = (method: AuthMethod) => {
-    setLoading(method)
-    setTimeout(() => {
+  // Wallet connect flow: detect connection → sign message → verify
+  useEffect(() => {
+    if (!connected || !publicKey || !signMessage || loading !== 'wallet') return
+
+    const authenticateWallet = async () => {
+      try {
+        setError(null)
+        // Create a nonce message
+        const nonce = crypto.randomUUID()
+        const message = `Sign in to Superteam Academy\n\nNonce: ${nonce}\nTimestamp: ${new Date().toISOString()}`
+        const messageBytes = new TextEncoder().encode(message)
+
+        // Request wallet signature
+        const signatureBytes = await signMessage(messageBytes)
+        const signature = bs58.encode(signatureBytes)
+
+        // Send to our verify endpoint
+        const res = await fetch('/api/auth/solana', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            publicKey: publicKey.toBase58(),
+            signature,
+            message,
+          }),
+        })
+
+        if (!res.ok) {
+          const data = await res.json()
+          throw new Error(data.error || 'Authentication failed')
+        }
+
+        // Success — trigger onboarding check
+        onWalletAuth()
+      } catch (err: unknown) {
+        console.error('Wallet auth error:', err)
+        if (err instanceof Error && err.message.includes('User rejected')) {
+          setError('Signature request was cancelled')
+          await disconnect()
+        } else {
+          setError(err instanceof Error ? err.message : 'Authentication failed')
+        }
+        setLoading(null)
+      }
+    }
+
+    authenticateWallet()
+  }, [connected, publicKey, signMessage, loading])
+
+  const handleWalletClick = () => {
+    setLoading('wallet')
+    setError(null)
+    if (connected && publicKey) {
+      // Already connected, will trigger the useEffect
+      return
+    }
+    setVisible(true)
+  }
+
+  const handleGoogleClick = async () => {
+    setLoading('google')
+    setError(null)
+    try {
+      await signIn.social({
+        provider: 'google',
+        callbackURL: '/en/login?callback=google',
+      })
+    } catch {
+      setError('Google sign-in failed')
       setLoading(null)
-      onSelect(method)
-    }, 900)
+    }
+  }
+
+  const handleGithubClick = async () => {
+    setLoading('github')
+    setError(null)
+    try {
+      await signIn.social({
+        provider: 'github',
+        callbackURL: '/en/login?callback=github',
+      })
+    } catch {
+      setError('GitHub sign-in failed')
+      setLoading(null)
+    }
   }
 
   return (
@@ -124,11 +217,28 @@ function AuthStep({ onSelect }: { onSelect: (method: AuthMethod) => void }) {
         </p>
       </div>
 
+      {/* Error message */}
+      {error && (
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className='mb-4 p-3 rounded-xl text-center'
+          style={{
+            background: 'rgba(220, 53, 69, 0.1)',
+            border: '1px solid rgba(220, 53, 69, 0.3)',
+          }}
+        >
+          <p className='font-ui text-[0.75rem]' style={{ color: '#dc3545' }}>
+            {error}
+          </p>
+        </motion.div>
+      )}
+
       {/* Auth options */}
       <div className='flex flex-col gap-3'>
         {/* Wallet — primary */}
         <button
-          onClick={() => handleSelect('wallet')}
+          onClick={handleWalletClick}
           disabled={!!loading}
           className='w-full flex items-center gap-3 px-5 py-4 rounded-xl font-ui text-[0.88rem] font-semibold transition-all cursor-pointer hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed'
           style={{
@@ -144,9 +254,6 @@ function AuthStep({ onSelect }: { onSelect: (method: AuthMethod) => void }) {
           )}
           <span>Connect Wallet</span>
           <div className='ml-auto flex items-center gap-1.5'>
-            <span className='font-ui text-[0.62rem] font-normal opacity-65'>
-              Phantom · Backpack
-            </span>
             <ChevronRight size={14} strokeWidth={1.5} />
           </div>
         </button>
@@ -167,7 +274,7 @@ function AuthStep({ onSelect }: { onSelect: (method: AuthMethod) => void }) {
 
         {/* Google */}
         <button
-          onClick={() => handleSelect('google')}
+          onClick={handleGoogleClick}
           disabled={!!loading}
           className='w-full flex items-center gap-3 px-5 py-3.5 rounded-xl font-ui text-[0.84rem] font-semibold transition-all cursor-pointer hover:-translate-y-0.5 disabled:opacity-70'
           style={{
@@ -196,7 +303,7 @@ function AuthStep({ onSelect }: { onSelect: (method: AuthMethod) => void }) {
 
         {/* GitHub */}
         <button
-          onClick={() => handleSelect('github')}
+          onClick={handleGithubClick}
           disabled={!!loading}
           className='w-full flex items-center gap-3 px-5 py-3.5 rounded-xl font-ui text-[0.84rem] font-semibold transition-all cursor-pointer hover:-translate-y-0.5 disabled:opacity-70'
           style={{
@@ -244,34 +351,64 @@ function AuthStep({ onSelect }: { onSelect: (method: AuthMethod) => void }) {
 function OnboardingStep({
   authMethod,
   onComplete,
+  githubUsername,
 }: {
   authMethod: AuthMethod
   onComplete: () => void
+  githubUsername?: string
 }) {
   const [name, setName] = useState('')
-  const [username, setUsername] = useState('')
+  const [username, setUsername] = useState(githubUsername || '')
   const [bio, setBio] = useState('')
   const [twitter, setTwitter] = useState('')
-  const [github, setGithub] = useState('')
+  const [github, setGithub] = useState(githubUsername || '')
   const [linkedin, setLinkedin] = useState('')
   const [telegram, setTelegram] = useState('')
-  const [walletConnected, setWalletConnected] = useState(false)
+  const { connected, publicKey } = useWallet()
+  const { setVisible } = useWalletModal()
   const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const needsWallet = authMethod === 'google' || authMethod === 'github'
+  const walletConnected = connected && !!publicKey
 
   const canSubmit =
     name.trim().length > 0 &&
     username.trim().length > 0 &&
     (!needsWallet || walletConnected)
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!canSubmit) return
     setSubmitting(true)
-    setTimeout(() => {
-      setSubmitting(false)
+    setError(null)
+
+    try {
+      // Update user profile in Better Auth
+      const res = await fetch('/api/auth/update-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name.trim(),
+          username: username.trim(),
+          bio: bio.trim(),
+          twitter: twitter.trim(),
+          github: github.trim(),
+          linkedin: linkedin.trim(),
+          telegram: telegram.trim(),
+          walletAddress: publicKey?.toBase58() || '',
+          onboardingComplete: true,
+        }),
+      })
+
+      if (!res.ok) {
+        throw new Error('Failed to save profile')
+      }
+
       onComplete()
-    }, 1100)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to save profile')
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -291,6 +428,21 @@ function OnboardingStep({
           Tell the community who you are
         </p>
       </div>
+
+      {/* Error */}
+      {error && (
+        <div
+          className='mb-4 p-3 rounded-xl text-center'
+          style={{
+            background: 'rgba(220, 53, 69, 0.1)',
+            border: '1px solid rgba(220, 53, 69, 0.3)',
+          }}
+        >
+          <p className='font-ui text-[0.75rem]' style={{ color: '#dc3545' }}>
+            {error}
+          </p>
+        </div>
+      )}
 
       {/* Wallet connect banner (only for social logins) */}
       {needsWallet && (
@@ -326,14 +478,14 @@ function OnboardingStep({
               </p>
               <p className='font-ui text-[0.62rem] text-cream/40 mt-0.5'>
                 {walletConnected
-                  ? `${truncateAddress('7xKX...4mNp')} · You can earn on-chain credentials`
+                  ? `${truncateAddress(publicKey!.toBase58())} · You can earn on-chain credentials`
                   : 'Required to receive XP, achievements, and on-chain certificates'}
               </p>
             </div>
           </div>
           {!walletConnected && (
             <button
-              onClick={() => setWalletConnected(true)}
+              onClick={() => setVisible(true)}
               className='flex-shrink-0 flex items-center gap-1.5 font-ui text-[0.7rem] font-semibold px-3.5 py-2 rounded-lg cursor-pointer transition-all'
               style={{
                 background: 'hsl(var(--amber) / 0.15)',
@@ -372,7 +524,7 @@ function OnboardingStep({
         <div className='grid grid-cols-2 gap-3'>
           <div className='flex flex-col gap-1.5'>
             <label className='font-ui text-[0.7rem] font-semibold text-cream/60'>
-              Full Name <span className='text-amber'>*</span>
+              Display Name <span className='text-amber'>*</span>
             </label>
             <input
               type='text'
@@ -500,6 +652,7 @@ function OnboardingStep({
 // ─── Step 2: Success ─────────────────────────────────────────────
 
 function SuccessStep() {
+  const router = useRouter()
   // Floating XP orbs
   const orbs = [
     { emoji: '⚡', x: -60, y: -40, delay: 0 },
@@ -570,9 +723,9 @@ function SuccessStep() {
           </span>
         </div>
 
-        <a
-          href='/en/dashboard'
-          className='flex items-center justify-center gap-2.5 w-full px-5 py-3.5 rounded-xl font-ui text-[0.88rem] font-semibold transition-all hover:-translate-y-0.5'
+        <button
+          onClick={() => router.push('/en/dashboard')}
+          className='flex items-center justify-center gap-2.5 w-full px-5 py-3.5 rounded-xl font-ui text-[0.88rem] font-semibold transition-all hover:-translate-y-0.5 cursor-pointer'
           style={{
             background: 'hsl(var(--green-primary))',
             color: 'hsl(var(--cream))',
@@ -581,7 +734,7 @@ function SuccessStep() {
         >
           Go to Dashboard
           <ArrowRight size={16} strokeWidth={2} />
-        </a>
+        </button>
       </motion.div>
     </motion.div>
   )
@@ -592,11 +745,55 @@ function SuccessStep() {
 const Login = () => {
   const [step, setStep] = useState<Step>('auth')
   const [authMethod, setAuthMethod] = useState<AuthMethod>(null)
+  const [githubUsername, setGithubUsername] = useState('')
+  const router = useRouter()
+  const { data: session, isPending } = useSession()
+
+  // If already authenticated and onboarded, redirect to dashboard
+  useEffect(() => {
+    if (isPending) return
+    if (session?.user) {
+      const user = session.user as Record<string, unknown>
+      if (user.onboardingComplete) {
+        router.replace('/en/dashboard')
+      } else {
+        // Auto-populate GitHub username if available
+        if (user.name && typeof user.name === 'string') {
+          setGithubUsername(user.name)
+        }
+        setStep('onboarding')
+      }
+    }
+  }, [session, isPending, router])
+
+  // Handle OAuth callback (Google/GitHub redirect back)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const callback = params.get('callback')
+    if (callback && session?.user) {
+      const user = session.user as Record<string, unknown>
+      setAuthMethod(callback as AuthMethod)
+      if (user.onboardingComplete) {
+        router.replace('/en/dashboard')
+      } else {
+        if (callback === 'github' && user.name) {
+          setGithubUsername(user.name as string)
+        }
+        setStep('onboarding')
+      }
+    }
+  }, [session])
 
   const handleAuthSelect = (method: AuthMethod) => {
     setAuthMethod(method)
-    setStep('onboarding')
+    // For wallet, the auth flow is handled in AuthStep via useEffect
+    // For Google/GitHub, the redirect happens in AuthStep
   }
+
+  const handleWalletAuth = useCallback(() => {
+    setAuthMethod('wallet')
+    setStep('onboarding')
+  }, [])
 
   const handleOnboardingComplete = () => {
     setStep('success')
@@ -639,13 +836,18 @@ const Login = () => {
         >
           <AnimatePresence mode='wait'>
             {step === 'auth' && (
-              <AuthStep key='auth' onSelect={handleAuthSelect} />
+              <AuthStep
+                key='auth'
+                onSelect={handleAuthSelect}
+                onWalletAuth={handleWalletAuth}
+              />
             )}
             {step === 'onboarding' && (
               <OnboardingStep
                 key='onboarding'
                 authMethod={authMethod}
                 onComplete={handleOnboardingComplete}
+                githubUsername={githubUsername}
               />
             )}
             {step === 'success' && <SuccessStep key='success' />}

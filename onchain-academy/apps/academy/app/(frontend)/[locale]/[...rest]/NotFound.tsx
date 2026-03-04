@@ -1,5 +1,6 @@
 'use client'
 
+import { StandardLayout } from '@/components/layout/StandardLayout'
 import {
   ArrowLeft,
   BookOpen,
@@ -8,7 +9,6 @@ import {
   LayoutDashboard,
 } from 'lucide-react'
 import Link from 'next/link'
-import { StandardLayout } from '../../../components/layout/StandardLayout'
 
 export const NotFound = () => {
   return (

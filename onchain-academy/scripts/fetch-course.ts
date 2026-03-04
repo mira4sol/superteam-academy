@@ -44,7 +44,7 @@ async function main() {
     new Date(course.updatedAt.toNumber() * 1000).toISOString(),
   )
 
-  // console.log('Content OBJ:            ', course)
+  console.log('Content OBJ:            ', course)
 }
 
 main().catch(console.error)

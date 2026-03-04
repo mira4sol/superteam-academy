@@ -17,7 +17,7 @@ import type {
   PathItem,
   StatItem,
   TestimonialItem,
-} from '../../app/components/home/home.types'
+} from '@/interfaces/home.types'
 
 const ACCENT = '#ffd23f'
 const PRIMARY = '#008c4c'

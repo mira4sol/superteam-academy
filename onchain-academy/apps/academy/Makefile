@@ -1,0 +1,1 @@
+npx @better-auth/cli migrate --config libs/auth.ts --yes 

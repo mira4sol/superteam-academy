@@ -1,6 +1,6 @@
 'use client'
 
-import type { PathItem } from '@/app/components/home/home.types'
+import type { PathItem } from '@/interfaces/home.types'
 import { PathSVGs } from '@/libs/constants/home.constants'
 import { ArrowRight } from 'lucide-react'
 import { useTranslations } from 'next-intl'
