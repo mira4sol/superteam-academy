@@ -13,5 +13,6 @@ export async function fetchAPI<T>(
 
 export { coursesAPI } from './courses.api'
 export { lessonsAPI } from './lessons.api'
+export { modulesAPI } from './modules.api'
 export { streaksAPI } from './streaks.api'
 export { usersAPI } from './users.api'

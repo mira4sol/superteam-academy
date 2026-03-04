@@ -14,6 +14,7 @@ Code Style and Structure
 - Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError).
 - Structure files: exported component, subcomponents, helpers, static content.
 - never delete my mock data
+- dont delete files unless prompted to and ask before deleting
 
 Standard.js Rules
 

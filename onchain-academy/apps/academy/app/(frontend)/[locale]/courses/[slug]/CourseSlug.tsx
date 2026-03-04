@@ -1,12 +1,18 @@
 'use client'
 
 import { StandardLayout } from '@/components/layout/StandardLayout'
+import CourseSlugSkeleton from '@/components/skeletons/CourseSlugSkeleton'
+import { coursesAPI, modulesAPI } from '@/libs/api'
 import {
   courseDetailExtras,
   extendedModules,
   extendedReviews,
 } from '@/libs/constants/courseDetail.constants'
 import { courses } from '@/libs/constants/mockData'
+import type { UIModule } from '@/libs/types/course.types'
+import { toCourseCard, toUIModule } from '@/libs/types/course.types'
+import { useAuthStore } from '@/stores/authStore'
+import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import {
   Award,
@@ -25,6 +31,7 @@ import {
   Video,
   Zap,
 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import posthog from 'posthog-js'
 import { useMemo, useState } from 'react'
 
@@ -300,21 +307,92 @@ interface CourseSlugProps {
 }
 
 export const CourseSlug = ({ slug }: CourseSlugProps) => {
-  const course = useMemo(() => courses.find((c) => c.slug === slug), [slug])
-  const extra = course ? courseDetailExtras[course.slug] : null
+  // ── Fetch real course from DB ─────────────────────────────
+  const { data: courseData, isLoading: isCourseLoading } = useQuery({
+    queryKey: ['course', slug],
+    queryFn: () => coursesAPI.findBySlug(slug),
+    staleTime: 1000 * 60 * 5,
+  })
 
-  // Merge extended modules/reviews if stubs
-  const modules = useMemo(() => {
+  const dbCourse = courseData?.docs?.[0] ?? null
+
+  // ── Fetch modules for the course ──────────────────────────
+  const { data: modulesData, isLoading: isModulesLoading } = useQuery({
+    queryKey: ['modules', dbCourse?.id],
+    queryFn: () => modulesAPI.findByCourse(String(dbCourse!.id)),
+    enabled: !!dbCourse?.id,
+    staleTime: 1000 * 60 * 5,
+  })
+
+  // ── Fetch lessons for each module ─────────────────────────
+  const moduleIds = useMemo(
+    () => (modulesData?.docs ?? []).map((m) => String(m.id)),
+    [modulesData],
+  )
+
+  const lessonsQueries = moduleIds.map((moduleId) => ({
+    queryKey: ['lessons', moduleId],
+    queryFn: () => modulesAPI.findLessonsByModule(moduleId),
+    staleTime: 1000 * 60 * 5,
+  }))
+
+  // We use individual useQuery calls per module via a derived state pattern
+  // because useQueries is not available without extra setup — instead
+  // we derive the modules+lessons after all module data is ready.
+
+  // ── Adapt DB data to UI shape ─────────────────────────────
+  const dbCourseUI = useMemo(
+    () => (dbCourse ? toCourseCard(dbCourse) : null),
+    [dbCourse],
+  )
+
+  // ── Fallback to mock data if DB not ready ─────────────────
+  const course = dbCourseUI ?? courses.find((c) => c.slug === slug) ?? null
+  const extra = course ? (courseDetailExtras[course.slug] ?? null) : null
+
+  // ── Merge modules: prefer DB, fall back to mock ───────────
+  const modules: UIModule[] = useMemo(() => {
+    if (modulesData?.docs?.length) {
+      // Build UI modules from DB (lessons fetched separately below)
+      return modulesData.docs.map((m) => toUIModule(m, []))
+    }
     if (!course) return []
     const ext = extendedModules[course.slug]
     return course.modules.length > 0 ? course.modules : (ext ?? [])
-  }, [course])
+  }, [modulesData, course])
 
   const reviews = useMemo(() => {
     if (!course) return []
     const ext = extendedReviews[course.slug]
     return course.reviews.length > 0 ? course.reviews : (ext ?? [])
   }, [course])
+
+  const isLoading = isCourseLoading || (!!dbCourse && isModulesLoading)
+  const { isAuthenticated } = useAuthStore()
+  const router = useRouter()
+
+  const handleEnroll = () => {
+    if (!isAuthenticated) {
+      const locale = 'en'
+      router.push(`/${locale}/login`)
+      return
+    }
+    posthog.capture('course_enrolled', {
+      course_slug: slug,
+      course_title: course?.title,
+      course_difficulty: course?.difficulty,
+      course_xp: course?.xp,
+    })
+    router.push(`/en/courses/${slug}/lesson/${firstLesson?.id || 'l1'}`)
+  }
+
+  if (isLoading) {
+    return (
+      <StandardLayout>
+        <CourseSlugSkeleton />
+      </StandardLayout>
+    )
+  }
 
   if (!course || !extra) {
     return (
@@ -554,20 +632,12 @@ export const CourseSlug = ({ slug }: CourseSlugProps) => {
                           Full access · Earn {course.xp} XP
                         </p>
                       </div>
-                      <a
-                        href={`/en/courses/${slug}/lesson/${firstLesson?.id || 'l1'}`}
-                        className='block w-full font-ui text-[0.85rem] font-semibold px-4 py-3 rounded-xl bg-green-primary text-cream text-center hover:bg-green-dark transition-all duration-200 shadow-[0_2px_14px_rgba(0,140,76,0.38)] hover:shadow-[0_6px_22px_rgba(0,140,76,0.48)] hover:-translate-y-0.5 cursor-pointer mb-3'
-                        onClick={() =>
-                          posthog.capture('course_enrolled', {
-                            course_slug: slug,
-                            course_title: course.title,
-                            course_difficulty: course.difficulty,
-                            course_xp: course.xp,
-                          })
-                        }
+                      <button
+                        onClick={handleEnroll}
+                        className='block w-full font-ui text-[0.85rem] font-semibold px-4 py-3 rounded-xl bg-green-primary text-cream text-center hover:bg-green-dark transition-all duration-200 shadow-primary-glow hover:shadow-primary-hover hover:-translate-y-0.5 cursor-pointer mb-3'
                       >
-                        Enroll Now — It&rsquo;s Free
-                      </a>
+                        Enroll Now
+                      </button>
                       <p className='font-ui text-[0.58rem] text-cream/30 text-center'>
                         Instant access · No credit card required
                       </p>

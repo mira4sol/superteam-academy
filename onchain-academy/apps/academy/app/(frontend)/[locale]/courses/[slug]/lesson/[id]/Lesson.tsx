@@ -1,5 +1,6 @@
 'use client'
 
+import { lessonsAPI, modulesAPI } from '@/libs/api'
 import type {
   CodeChallenge,
   ContentBlock,
@@ -12,6 +13,7 @@ import {
   lessonContents,
   lessonOrder,
 } from '@/libs/constants/lesson.constants'
+import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import {
   AlertTriangle,
@@ -42,6 +44,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 // ─── CodeMirror (lazy) ─────────────────────────────────────────
 
 import { StandardLayout } from '@/components/layout/StandardLayout'
+import LessonSkeleton from '@/components/skeletons/LessonSkeleton'
 import { defaultKeymap } from '@codemirror/commands'
 import { javascript } from '@codemirror/lang-javascript'
 import { json } from '@codemirror/lang-json'
@@ -959,14 +962,68 @@ interface LessonProps {
 }
 
 const Lesson = ({ id, slug }: LessonProps) => {
+  // ── Fetch real lesson from DB ─────────────────────────────
+  const { data: dbLessonData, isLoading: isLessonLoading } = useQuery({
+    queryKey: ['lesson', id],
+    queryFn: () => lessonsAPI.findById(id),
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+    throwOnError: false,
+  })
+
+  // ── Fetch lesson content from DB ──────────────────────────
+  // Stored for future use when DB lesson content is rendered
+  useQuery({
+    queryKey: ['lesson-content', id],
+    queryFn: () => lessonsAPI.getContent(id),
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+    throwOnError: false,
+  })
+
+  // ── Resolve lesson from DB or fall back to mock constants ─
+  // Always keep mock fallback — constants stay intact
   const lesson = lessonContents[id] as LessonContent | undefined
+
+  // ── Build nav ─────────────────────────────────────────────
+  // nav derived from mock constants (covers all seeded lessons)
   const nav = getLessonNav(id)
+
+  // ── Sidebar — prefer DB modules/lessons, fall back to constants ─
+  // Fetch course modules for sidebar nav (course ID via dbLessonData)
+  const moduleRelation = dbLessonData?.module
+  const courseId =
+    moduleRelation &&
+    typeof moduleRelation === 'object' &&
+    'course' in moduleRelation
+      ? (moduleRelation.course as { id?: string | number })?.id
+      : undefined
+
+  const { data: dbModulesData } = useQuery({
+    queryKey: ['modules-for-lesson', courseId],
+    queryFn: () => modulesAPI.findByCourse(String(courseId)),
+    enabled: !!courseId,
+    staleTime: 1000 * 60 * 5,
+  })
+
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [completed, setCompleted] = useState(lesson?.completed ?? false)
   const [showCelebration, setShowCelebration] = useState(false)
 
-  // Gather all lessons for sidebar grouped by module
-  const modulesMap = useMemo(() => {
+  // Sidebar modules map — prefer DB data when available
+  // Returns tuples [moduleId, { moduleTitle, lessons }] to match sidebar JSX
+  const modulesMap = useMemo((): [
+    string,
+    { moduleTitle: string; lessons: LessonContent[] },
+  ][] => {
+    // If we have DB modules use them (lessons array will be empty, sidebar shows module headings only)
+    if (dbModulesData?.docs?.length) {
+      return dbModulesData.docs.map((m) => [
+        String(m.id),
+        { moduleTitle: m.title, lessons: [] as LessonContent[] },
+      ])
+    }
+    // Fall back to mock constants
     const map = new Map<
       string,
       { moduleTitle: string; lessons: LessonContent[] }
@@ -980,7 +1037,7 @@ const Lesson = ({ id, slug }: LessonProps) => {
       map.get(l.moduleId)!.lessons.push(l)
     }
     return Array.from(map.entries())
-  }, [])
+  }, [dbModulesData])
 
   useEffect(() => {
     if (!lesson) return
@@ -1002,12 +1059,17 @@ const Lesson = ({ id, slug }: LessonProps) => {
       lesson_title: lesson.title,
       lesson_type: lesson.type,
       course_slug: slug,
-      xp_earned: lesson.xp,
+      xp_earned: lesson.xpReward,
     })
   }, [completed, id, lesson, slug])
 
   const hasCodeEditor = lesson?.type === 'code_challenge' || !!lesson?.challenge
   const hasQuiz = lesson?.type === 'quiz' || !!lesson?.quiz
+
+  // Show skeleton while lesson is being fetched from DB and not yet in mock constants
+  if (isLessonLoading && !lesson) {
+    return <LessonSkeleton />
+  }
 
   if (!lesson) {
     return (

@@ -3,8 +3,12 @@
 import CourseCard from '@/components/CourseCard'
 import { PathCard } from '@/components/PathCard'
 import { StandardLayout } from '@/components/layout/StandardLayout'
+import CourseCardSkeleton from '@/components/skeletons/CourseCardSkeleton'
+import { coursesAPI } from '@/libs/api'
 import { PATHS } from '@/libs/constants/home.constants'
 import { courses } from '@/libs/constants/mockData'
+import { toCourseCard } from '@/libs/types/course.types'
+import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { Search } from 'lucide-react'
 import { useTranslations } from 'next-intl'
@@ -34,9 +38,28 @@ const Courses = () => {
     modules: string[]
   }>
 
+  // ── Fetch real courses from DB ──────────────────────────────
+  const {
+    data: coursesData,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['courses', 'published'],
+    queryFn: () => coursesAPI.findPublished(),
+    staleTime: 1000 * 60 * 5, // 5 min cache
+  })
+
+  // Use real DB data if available, otherwise fall back to mock data
+  const allCourses = useMemo(() => {
+    if (isLoading || isError || !coursesData?.docs?.length) {
+      return courses
+    }
+    return coursesData.docs.map(toCourseCard)
+  }, [coursesData, isLoading, isError])
+
   const filtered = useMemo(
     () =>
-      courses.filter(
+      allCourses.filter(
         (c) =>
           (difficulty === 'All' || c.difficulty === difficulty) &&
           (topic === 'All' || c.topic === topic) &&
@@ -44,7 +67,7 @@ const Courses = () => {
             c.title.toLowerCase().includes(search.toLowerCase()) ||
             c.description.toLowerCase().includes(search.toLowerCase())),
       ),
-    [search, difficulty, topic],
+    [allCourses, search, difficulty, topic],
   )
 
   return (
@@ -137,7 +160,7 @@ const Courses = () => {
               All Courses
             </h2>
             <span className='font-ui text-sm text-muted-foreground'>
-              {filtered.length} courses
+              {isLoading ? '—' : `${filtered.length} courses`}
             </span>
           </div>
 
@@ -206,7 +229,13 @@ const Courses = () => {
           </div>
 
           {/* Grid */}
-          {filtered.length > 0 ? (
+          {isLoading ? (
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+              {[...Array(6)].map((_, i) => (
+                <CourseCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : filtered.length > 0 ? (
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
               {filtered.map((course, i) => (
                 <motion.div

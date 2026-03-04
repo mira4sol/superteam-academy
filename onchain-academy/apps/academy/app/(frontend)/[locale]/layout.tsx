@@ -1,6 +1,7 @@
 import { Toaster as Sonner } from '@/components/ui/sonner'
 import { Toaster } from '@/components/ui/toaster'
 import { AuthProvider } from '@/contexts/AuthProvider'
+import { ReactQueryProvider } from '@/contexts/ReactQueryProvider'
 import { SolanaProvider } from '@/contexts/SolanaProvider'
 import { routing } from '@/i18n/routing'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
@@ -28,9 +29,11 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <SolanaProvider>
-        <AuthProvider>{children}</AuthProvider>
-      </SolanaProvider>
+      <ReactQueryProvider>
+        <SolanaProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </SolanaProvider>
+      </ReactQueryProvider>
       <Toaster />
       <Sonner />
     </NextIntlClientProvider>

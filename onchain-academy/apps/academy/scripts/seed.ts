@@ -354,7 +354,9 @@ async function seed() {
                   collection: 'lesson-contents',
                   data: {
                     lesson: payloadLessonId as number,
-                    blocks: blocks as Record<string, unknown>[],
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    blocks: blocks as any,
+                    // blocks: blocks as Record<string, unknown>[],
                     hints: detail.hints?.map((h) => ({ hint: h })) || [],
                     solution: detail.solution || '',
                     ...(challengeData
