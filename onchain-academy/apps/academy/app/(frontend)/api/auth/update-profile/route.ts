@@ -1,4 +1,5 @@
 import { auth } from '@/libs/auth'
+import { getPostHogClient } from '@/libs/posthog-server'
 import { getPayloadClient } from '@/libs/payload'
 import { cookies } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
@@ -104,6 +105,17 @@ export async function POST(req: NextRequest) {
       ...(telegram !== undefined && { telegram }),
       ...(walletAddress && { walletAddress }),
       ...(onboardingComplete !== undefined && { onboardingComplete }),
+    })
+
+    const posthog = getPostHogClient()
+    posthog.capture({
+      distinctId: session.user.id,
+      event: 'profile_updated',
+      properties: {
+        has_username: !!username,
+        has_wallet: !!walletAddress,
+        onboarding_complete: !!onboardingComplete,
+      },
     })
 
     return NextResponse.json({ success: true })

@@ -18,6 +18,7 @@ import {
   Zap,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import posthog from 'posthog-js'
 import { useCallback, useEffect, useState } from 'react'
 
 // ─── Types ──────────────────────────────────────────────────────
@@ -157,6 +158,10 @@ function AuthStep({
         }
 
         // Success — trigger onboarding check
+        posthog.capture('user_signed_in', {
+          auth_method: 'wallet',
+          wallet_address: walletAddress,
+        })
         onWalletAuth()
       } catch (err: unknown) {
         console.error('Wallet auth error:', err)
@@ -187,6 +192,7 @@ function AuthStep({
     setLoading('google')
     setError(null)
     try {
+      posthog.capture('user_signed_in', { auth_method: 'google' })
       await signIn.social({
         provider: 'google',
         callbackURL: '/en/login?callback=google',
@@ -201,6 +207,7 @@ function AuthStep({
     setLoading('github')
     setError(null)
     try {
+      posthog.capture('user_signed_in', { auth_method: 'github' })
       await signIn.social({
         provider: 'github',
         callbackURL: '/en/login?callback=github',
@@ -451,6 +458,16 @@ function OnboardingStep({
         throw new Error(data.error || 'Failed to save profile')
       }
 
+      posthog.identify(username.trim().toLowerCase(), {
+        name: name.trim(),
+        username: username.trim().toLowerCase(),
+        auth_method: authMethod,
+        has_wallet: !!publicKey,
+      })
+      posthog.capture('user_signed_up', {
+        auth_method: authMethod,
+        has_wallet: !!publicKey,
+      })
       onComplete()
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Failed to save profile'

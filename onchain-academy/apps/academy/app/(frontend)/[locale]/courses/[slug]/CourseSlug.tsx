@@ -25,6 +25,7 @@ import {
   Video,
   Zap,
 } from 'lucide-react'
+import posthog from 'posthog-js'
 import { useMemo, useState } from 'react'
 
 // ─── Helpers ───────────────────────────────────────────────────
@@ -532,6 +533,13 @@ export const CourseSlug = ({ slug }: CourseSlugProps) => {
                       <a
                         href={`/en/courses/${slug}/lesson/${nextLesson?.id || 'l1'}`}
                         className='block w-full font-ui text-[0.85rem] font-semibold px-4 py-3 rounded-xl bg-green-primary text-cream text-center hover:bg-green-dark transition-all duration-200 shadow-[0_2px_14px_rgba(0,140,76,0.38)] hover:shadow-[0_6px_22px_rgba(0,140,76,0.48)] hover:-translate-y-0.5 cursor-pointer'
+                        onClick={() =>
+                          posthog.capture('course_continued', {
+                            course_slug: slug,
+                            course_title: course.title,
+                            progress_pct: progressPct,
+                          })
+                        }
                       >
                         Continue Learning →
                       </a>
@@ -549,6 +557,14 @@ export const CourseSlug = ({ slug }: CourseSlugProps) => {
                       <a
                         href={`/en/courses/${slug}/lesson/${firstLesson?.id || 'l1'}`}
                         className='block w-full font-ui text-[0.85rem] font-semibold px-4 py-3 rounded-xl bg-green-primary text-cream text-center hover:bg-green-dark transition-all duration-200 shadow-[0_2px_14px_rgba(0,140,76,0.38)] hover:shadow-[0_6px_22px_rgba(0,140,76,0.48)] hover:-translate-y-0.5 cursor-pointer mb-3'
+                        onClick={() =>
+                          posthog.capture('course_enrolled', {
+                            course_slug: slug,
+                            course_title: course.title,
+                            course_difficulty: course.difficulty,
+                            course_xp: course.xp,
+                          })
+                        }
                       >
                         Enroll Now — It&rsquo;s Free
                       </a>

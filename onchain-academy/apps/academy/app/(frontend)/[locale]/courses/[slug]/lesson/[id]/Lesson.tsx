@@ -36,6 +36,7 @@ import {
   X,
   Zap,
 } from 'lucide-react'
+import posthog from 'posthog-js'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 // ─── CodeMirror (lazy) ─────────────────────────────────────────
@@ -378,6 +379,11 @@ function QuizPanel({
     }
     setScore(correct)
     setSubmitted(true)
+    posthog.capture('quiz_submitted', {
+      score: correct,
+      total_questions: quiz.questions.length,
+      passed: correct === quiz.questions.length,
+    })
     if (correct === quiz.questions.length) {
       setTimeout(onComplete, 1500)
     }
@@ -634,6 +640,9 @@ function ChallengePanel({
   const handleRun = useCallback(() => {
     setRunning(true)
     setOutput(null)
+    posthog.capture('code_challenge_run', {
+      language: challenge.language,
+    })
 
     // Simulate test execution
     setTimeout(() => {
@@ -973,11 +982,29 @@ const Lesson = ({ id, slug }: LessonProps) => {
     return Array.from(map.entries())
   }, [])
 
+  useEffect(() => {
+    if (!lesson) return
+    posthog.capture('lesson_started', {
+      lesson_id: id,
+      lesson_title: lesson.title,
+      lesson_type: lesson.type,
+      course_slug: slug,
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const handleComplete = useCallback(() => {
-    if (completed) return
+    if (completed || !lesson) return
     setCompleted(true)
     setShowCelebration(true)
-  }, [completed])
+    posthog.capture('lesson_completed', {
+      lesson_id: id,
+      lesson_title: lesson.title,
+      lesson_type: lesson.type,
+      course_slug: slug,
+      xp_earned: lesson.xp,
+    })
+  }, [completed, id, lesson, slug])
 
   const hasCodeEditor = lesson?.type === 'code_challenge' || !!lesson?.challenge
   const hasQuiz = lesson?.type === 'quiz' || !!lesson?.quiz

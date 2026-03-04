@@ -10,6 +10,7 @@ import {
   WALLET_OPTIONS,
 } from '@/libs/constants/auth.constants'
 import { truncateAddress } from '@/libs/string'
+import posthog from 'posthog-js'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   AlertTriangle,
@@ -208,6 +209,7 @@ function ProfileTab() {
   const [saved, setSaved] = useState(false)
 
   const handleSave = () => {
+    posthog.capture('profile_settings_saved', { tab: 'profile' })
     setSaved(true)
     setTimeout(() => setSaved(false), 2500)
   }
@@ -599,6 +601,7 @@ function PreferencesTab() {
   const [saved, setSaved] = useState(false)
 
   const handleSave = () => {
+    posthog.capture('profile_settings_saved', { tab: 'preferences', language })
     setSaved(true)
     setTimeout(() => setSaved(false), 2500)
   }
@@ -717,6 +720,10 @@ function PrivacyTab() {
   const [saved, setSaved] = useState(false)
 
   const handleSave = () => {
+    posthog.capture('profile_settings_saved', {
+      tab: 'privacy',
+      profile_visibility: visibility,
+    })
     setSaved(true)
     setTimeout(() => setSaved(false), 2500)
   }
