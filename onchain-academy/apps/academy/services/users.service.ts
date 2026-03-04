@@ -30,7 +30,7 @@ export async function createUser(data: {
   walletAddress?: string
   authMethod: 'wallet' | 'google' | 'github'
   displayName?: string
-  githubUsername?: string
+  username?: string
   password?: string
 }) {
   const payload = await getPayloadClient()

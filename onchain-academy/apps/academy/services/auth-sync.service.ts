@@ -53,6 +53,7 @@ export async function syncUserToPayload(betterAuthUser: {
       id: docs[0].id,
       data: {
         displayName: betterAuthUser.name || docs[0].displayName,
+        username: betterAuthUser.username || docs[0].username || undefined,
         walletAddress:
           betterAuthUser.walletAddress || docs[0].walletAddress || undefined,
         onboardingComplete:
@@ -72,6 +73,7 @@ export async function syncUserToPayload(betterAuthUser: {
         email: payloadEmail,
         password: randomPassword,
         displayName: betterAuthUser.name || '',
+        username: betterAuthUser.username || undefined,
         walletAddress: betterAuthUser.walletAddress || undefined,
         authMethod,
         role: 'learner',

@@ -32,6 +32,7 @@ Standard.js Rules
 - Use PascalCase for constructors and React components.
 - - Use consts instead of functions, for example, “const toggle = () =>”. Also, define a type if possible.
 - interfaces and types should be in ./interfaces
+- avoid using any type
 
 Naming Conventions
 
@@ -59,6 +60,7 @@ React Best Practices
 - Use short-circuit evaluation and ternary operators for conditional rendering.
 - Components should be modular and reusable.
 - Maintain a consistent and clear component structure.
+- avoid using any type
 
 State Management
 

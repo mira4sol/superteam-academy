@@ -1,5 +1,6 @@
 'use client'
 
+import { User } from '@/libs/auth'
 import { signIn, useSession } from '@/libs/auth-client'
 import { truncateAddress } from '@/libs/string'
 import { useWallet } from '@solana/wallet-adapter-react'
@@ -370,20 +371,21 @@ function AuthStep({
 function OnboardingStep({
   authMethod,
   onComplete,
-  githubUsername,
+  user,
 }: {
   authMethod: AuthMethod
   onComplete: () => void
-  githubUsername?: string
+  user?: User
 }) {
-  const [name, setName] = useState('')
-  const [username, setUsername] = useState(githubUsername || '')
-  const [bio, setBio] = useState('')
-  const [twitter, setTwitter] = useState('')
-  const [github, setGithub] = useState(githubUsername || '')
-  const [linkedin, setLinkedin] = useState('')
-  const [telegram, setTelegram] = useState('')
-  const { connected, publicKey } = useWallet()
+  const [name, setName] = useState(user?.name || '')
+  const [username, setUsername] = useState(user?.username || '')
+  const [usernameError, setUsernameError] = useState<string | null>(null)
+  const [bio, setBio] = useState(user?.bio || '')
+  const [twitter, setTwitter] = useState(user?.twitter || '')
+  const [github, setGithub] = useState(user?.github || '')
+  const [linkedin, setLinkedin] = useState(user?.linkedin || '')
+  const [telegram, setTelegram] = useState(user?.telegram || '')
+  const { connected, publicKey, disconnect } = useWallet()
   const { setVisible } = useWalletModal()
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -391,9 +393,30 @@ function OnboardingStep({
   const needsWallet = authMethod === 'google' || authMethod === 'github'
   const walletConnected = connected && !!publicKey
 
+  /** Twitter-style validation: starts with letter, lowercase letters/numbers/underscores, 3-30 chars */
+  const validateUsername = (val: string): string | null => {
+    if (!val) return null // empty = not yet typed
+    if (val.length < 3) return 'Must be at least 3 characters'
+    if (val.length > 30) return 'Must be 30 characters or less'
+    if (/^\d/.test(val)) return 'Cannot start with a number'
+    if (/\s/.test(val)) return 'Cannot contain spaces'
+    if (/-/.test(val)) return 'Use underscores instead of dashes'
+    if (!/^[a-z][a-z0-9_]{2,29}$/.test(val))
+      return 'Only lowercase letters, numbers, and underscores'
+    return null
+  }
+
+  const handleUsernameChange = (val: string) => {
+    const cleaned = val.toLowerCase().replace(/[^a-z0-9_]/g, '')
+    setUsername(cleaned)
+    setUsernameError(validateUsername(cleaned))
+    console.log('cleaned', cleaned)
+  }
+
   const canSubmit =
     name.trim().length > 0 &&
-    username.trim().length > 0 &&
+    username.trim().length >= 3 &&
+    !usernameError &&
     (!needsWallet || walletConnected)
 
   const handleSubmit = async () => {
@@ -406,9 +429,10 @@ function OnboardingStep({
       const res = await fetch('/api/auth/update-profile', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           name: name.trim(),
-          username: username.trim(),
+          username: username.trim().toLowerCase(),
           bio: bio.trim(),
           twitter: twitter.trim(),
           github: github.trim(),
@@ -419,13 +443,25 @@ function OnboardingStep({
         }),
       })
 
+      console.log('res', res)
+
       if (!res.ok) {
-        throw new Error('Failed to save profile')
+        const data = await res
+          .json()
+          .catch(() => ({ error: 'Failed to save profile' }))
+        // Show specific server errors (e.g. 'Username is already taken')
+        throw new Error(data.error || 'Failed to save profile')
       }
 
       onComplete()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save profile')
+      const msg = err instanceof Error ? err.message : 'Failed to save profile'
+      // Show username-specific errors inline
+      if (msg.toLowerCase().includes('username')) {
+        setUsernameError(msg)
+      } else {
+        setError(msg)
+      }
       setSubmitting(false)
     }
   }
@@ -502,7 +538,7 @@ function OnboardingStep({
               </p>
             </div>
           </div>
-          {!walletConnected && (
+          {!walletConnected ? (
             <button
               onClick={() => setVisible(true)}
               className='flex-shrink-0 flex items-center gap-1.5 font-ui text-[0.7rem] font-semibold px-3.5 py-2 rounded-lg cursor-pointer transition-all'
@@ -514,6 +550,18 @@ function OnboardingStep({
             >
               <Wallet size={12} strokeWidth={1.5} />
               Connect
+            </button>
+          ) : (
+            <button
+              onClick={() => disconnect()}
+              className='flex-shrink-0 flex items-center gap-1.5 font-ui text-[0.7rem] font-semibold px-3.5 py-2 rounded-lg cursor-pointer transition-all'
+              style={{
+                background: 'hsl(var(--green-primary) / 0.15)',
+                border: '1px solid hsl(var(--green-primary) / 0.3)',
+                color: 'hsl(var(--green-mint))',
+              }}
+            >
+              Disconnect
             </button>
           )}
         </motion.div>
@@ -564,16 +612,25 @@ function OnboardingStep({
             <input
               type='text'
               value={username}
-              onChange={(e) =>
-                setUsername(e.target.value.toLowerCase().replace(/\s/g, '_'))
-              }
+              onChange={(e) => handleUsernameChange(e.target.value)}
               placeholder='alex_dev'
+              maxLength={30}
               className='w-full px-3 py-2.5 rounded-xl font-ui text-[0.8rem] text-cream focus:outline-none transition-colors placeholder:text-cream/25'
               style={{
                 background: 'hsl(var(--green-hero) / 0.5)',
-                border: '1px solid hsl(var(--cream) / 0.12)',
+                border: usernameError
+                  ? '1px solid rgba(220, 53, 69, 0.5)'
+                  : '1px solid hsl(var(--cream) / 0.12)',
               }}
             />
+            {usernameError && (
+              <p
+                className='font-ui text-[0.62rem]'
+                style={{ color: '#dc3545' }}
+              >
+                {usernameError}
+              </p>
+            )}
           </div>
         </div>
 
@@ -672,6 +729,8 @@ function OnboardingStep({
 
 function SuccessStep() {
   const router = useRouter()
+  const { refetch } = useSession()
+
   // Floating XP orbs
   const orbs = [
     { emoji: '⚡', x: -60, y: -40, delay: 0 },
@@ -768,7 +827,7 @@ function SuccessStep() {
 const Login = () => {
   const [step, setStep] = useState<Step>('auth')
   const [authMethod, setAuthMethod] = useState<AuthMethod>(null)
-  const [githubUsername, setGithubUsername] = useState('')
+  // const [githubUsername, setGithubUsername] = useState('')
   const router = useRouter()
   const { data: session, isPending, refetch } = useSession()
 
@@ -777,13 +836,14 @@ const Login = () => {
     if (isPending) return
     if (session?.user) {
       const user = session.user as Record<string, unknown>
+      console.log('session user', user)
       if (user.onboardingComplete) {
         router.replace('/en/dashboard')
       } else {
         // Auto-populate GitHub username if available
-        if (user.name && typeof user.name === 'string') {
-          setGithubUsername(user.name)
-        }
+        // if (user.username && typeof user.username === 'string') {
+        //   setGithubUsername(user.username)
+        // }
         setStep('onboarding')
       }
     }
@@ -799,9 +859,9 @@ const Login = () => {
       if (user.onboardingComplete) {
         router.replace('/en/dashboard')
       } else {
-        if (callback === 'github' && user.name) {
-          setGithubUsername(user.name as string)
-        }
+        // if (callback === 'github' && user.username) {
+        //   setGithubUsername(user.username as string)
+        // }
         setStep('onboarding')
       }
     }
@@ -872,7 +932,7 @@ const Login = () => {
                 key='onboarding'
                 authMethod={authMethod}
                 onComplete={handleOnboardingComplete}
-                githubUsername={githubUsername}
+                user={session?.user}
               />
             )}
             {step === 'success' && <SuccessStep key='success' />}

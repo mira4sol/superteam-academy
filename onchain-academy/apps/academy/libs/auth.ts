@@ -21,10 +21,39 @@ export const auth = betterAuth({
     github: {
       clientId: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      mapProfileToUser: async (profile) => {
+        console.log(profile)
+        const baseUsername = (profile.name || profile.login)
+          .toLowerCase()
+          .replace(/\s+/g, '_') // Replace space with _
+          .replace(/[^a-z0-9_]/g, '') // Remove special chars
+        return {
+          email: profile.email,
+          name: profile.name,
+          username: baseUsername,
+          github: profile.login,
+          twitter: profile.twitter_username,
+          bio: profile.bio,
+          image: profile.avatar_url,
+        }
+      },
     },
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      mapProfileToUser: async (profile) => {
+        console.log(profile)
+        const baseUsername = profile.name
+          .toLowerCase()
+          .replace(/\s+/g, '_') // Replace space with _
+          .replace(/[^a-z0-9_]/g, '') // Remove special chars
+        return {
+          email: profile.email,
+          name: profile.name,
+          username: baseUsername,
+          image: profile.picture,
+        }
+      },
     },
   },
 
@@ -98,3 +127,5 @@ export const auth = betterAuth({
 })
 
 export type Session = typeof auth.$Infer.Session
+// Infer the user type with all additional fields
+export type User = Session['user']

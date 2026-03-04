@@ -45,9 +45,20 @@ export const Users: CollectionConfig = {
       defaultValue: 'wallet',
     },
     {
-      name: 'githubUsername',
+      name: 'username',
       type: 'text',
-      admin: { description: 'Auto-saved from GitHub OAuth' },
+      unique: true,
+      index: true,
+      // validate: (val: string | null | undefined) => {
+      //   if (!val) return true // optional during creation
+      //   if (!/^[a-z][a-z0-9_]{2,29}$/.test(val)) {
+      //     return 'Username must be 3-30 characters, start with a letter, and contain only lowercase letters, numbers, and underscores'
+      //   }
+      //   return true
+      // },
+      admin: {
+        description: 'Unique username (lowercase, letters/numbers/underscores)',
+      },
     },
     {
       name: 'displayName',
