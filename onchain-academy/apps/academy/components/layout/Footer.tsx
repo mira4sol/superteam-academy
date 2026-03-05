@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 import { useState } from 'react'
 import { Link } from '../../i18n/navigation'
 
+// const FOOTER_LINK_KEYS = ['Learn', 'Community', 'Company', 'Support'] as const
 const FOOTER_LINK_KEYS = ['Learn', 'Community', 'Company', 'Support'] as const
 
 const socialLinks = [

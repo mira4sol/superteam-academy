@@ -75,7 +75,7 @@ const Courses = () => {
       {/* Hero */}
       <section>
         <div
-          className='px-[5%] py-16 pattern-diagonal'
+          className='py-16 pattern-diagonal'
           style={{ background: 'hsl(var(--green-secondary))' }}
         >
           <div className='max-w-[1200px] mx-auto'>

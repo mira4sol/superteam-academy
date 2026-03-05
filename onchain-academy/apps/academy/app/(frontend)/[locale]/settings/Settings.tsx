@@ -10,7 +10,7 @@ import {
   WALLET_OPTIONS,
 } from '@/libs/constants/auth.constants'
 import { truncateAddress } from '@/libs/string'
-import posthog from 'posthog-js'
+import { useAuthStore } from '@/stores'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   AlertTriangle,
@@ -31,6 +31,7 @@ import {
   User,
   Wallet,
 } from 'lucide-react'
+import posthog from 'posthog-js'
 import { useState } from 'react'
 
 // ─── Types ──────────────────────────────────────────────────────
@@ -197,15 +198,16 @@ function SaveButton({
 // ─── Tab Panels ──────────────────────────────────────────────────
 
 function ProfileTab() {
-  const u = MOCK_USER_SETTINGS
-  const [name, setName] = useState(u.name)
-  const [username, setUsername] = useState(u.username)
-  const [bio, setBio] = useState(u.bio)
-  const [website, setWebsite] = useState(u.website)
-  const [twitter, setTwitter] = useState(u.socials.twitter)
-  const [github, setGithub] = useState(u.socials.github)
-  const [linkedin, setLinkedin] = useState(u.socials.linkedin)
-  const [telegram, setTelegram] = useState(u.socials.telegram)
+  // const u = MOCK_USER_SETTINGS
+  const { user } = useAuthStore()
+  const [name, setName] = useState(user?.name || '')
+  const [username, setUsername] = useState(user?.username || '')
+  const [bio, setBio] = useState(user?.bio || '')
+  const [website, setWebsite] = useState('')
+  const [twitter, setTwitter] = useState(user?.twitter || '')
+  const [github, setGithub] = useState(user?.github || '')
+  const [linkedin, setLinkedin] = useState(user?.linkedin || '')
+  const [telegram, setTelegram] = useState(user?.telegram || '')
   const [saved, setSaved] = useState(false)
 
   const handleSave = () => {
@@ -353,6 +355,8 @@ function ProfileTab() {
 }
 
 function AccountTab() {
+  const { user } = useAuthStore()
+
   const [wallets, setWallets] = useState(WALLET_OPTIONS)
   const [socials, setSocials] = useState(SOCIAL_CONNECTIONS)
 
@@ -384,7 +388,7 @@ function AccountTab() {
         <div className='flex items-center justify-between gap-4'>
           <div>
             <p className='font-ui text-[0.82rem] font-semibold text-charcoal'>
-              {MOCK_USER_SETTINGS.email}
+              {user?.email || MOCK_USER_SETTINGS.email}
             </p>
             <p className='font-ui text-[0.65rem] text-text-tertiary mt-0.5 flex items-center gap-1'>
               <Check

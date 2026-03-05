@@ -457,7 +457,7 @@ export const CourseSlug = ({ slug }: CourseSlugProps) => {
           }}
         />
 
-        <div className='relative z-10 max-w-[1200px] mx-auto px-[5%] py-10 lg:py-14'>
+        <div className='relative z-10 max-w-[1200px] mx-auto py-10 lg:py-14'>
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}

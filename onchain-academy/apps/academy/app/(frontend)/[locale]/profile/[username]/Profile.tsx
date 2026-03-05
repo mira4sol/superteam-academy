@@ -209,10 +209,42 @@ function EvolutionBar({ stage }: { stage: number }) {
 
 interface ProfileProps {
   username: string
+  dbUser?: {
+    displayName?: string
+    username?: string
+    bio?: string
+    avatar?: string | { url?: string }
+    createdAt?: string | Date
+    socialLinks?: {
+      github?: string
+      twitter?: string
+      website?: string
+    }
+  } | null
 }
 
-export const Profile = ({ username }: ProfileProps) => {
-  const u = profileUser
+export const Profile = ({ username, dbUser }: ProfileProps) => {
+  const staticU = profileUser
+
+  let joinDate = staticU.joinDate
+  if (dbUser?.createdAt) {
+    const d = new Date(dbUser.createdAt)
+    joinDate = d.toLocaleString('en-US', { month: 'long', year: 'numeric' })
+  }
+
+  const u = {
+    ...staticU,
+    name: dbUser?.displayName || dbUser?.username || staticU.name,
+    handle: dbUser?.username || staticU.handle,
+    bio: dbUser?.bio || staticU.bio,
+    avatar: dbUser?.avatar || dbUser?.avatar || staticU.avatar,
+    joinDate: joinDate,
+    socials: {
+      github: dbUser?.socialLinks?.github || staticU.socials.github,
+      twitter: dbUser?.socialLinks?.twitter || staticU.socials.twitter,
+      website: dbUser?.socialLinks?.website || staticU.socials.website,
+    },
+  }
 
   return (
     <StandardLayout>
@@ -236,7 +268,7 @@ export const Profile = ({ username }: ProfileProps) => {
           }}
         />
 
-        <div className='relative z-10 max-w-[1200px] mx-auto px-[5%] py-10 lg:py-14'>
+        <div className='relative z-10 max-w-[1200px] mx-auto py-10 lg:py-14'>
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -345,6 +377,7 @@ export const Profile = ({ username }: ProfileProps) => {
           </motion.div>
         </div>
       </div>
+      {/* end of banner */}
 
       {/* ─── MAIN CONTENT ─────────────────────────────────────── */}
       <div className='max-w-[1200px] mx-auto flex flex-col gap-5 py-12'>

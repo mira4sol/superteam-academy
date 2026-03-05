@@ -6,16 +6,28 @@ import {
   leaderboardUsers,
   timeFilters,
 } from '@/libs/constants/leaderboard.constants'
+import { useAuthStore } from '@/stores'
 import { Flame, Trophy, Zap } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Leaderboard() {
+  const { user } = useAuthStore()
   const [selectedTimeFilter, setSelectedTimeFilter] = useState('all-time')
   const [selectedCourse, setSelectedCourse] = useState('All Courses')
+  const [leaderboardData, setLeaderboardData] = useState(leaderboardUsers)
 
-  const filteredUsers = leaderboardUsers.filter((user) =>
+  const filteredUsers = leaderboardData.filter((user) =>
     selectedCourse === 'All Courses' ? true : user.course === selectedCourse,
   )
+
+  useEffect(() => {
+    console.log('user', user)
+    if (!user) return
+
+    leaderboardUsers[1].isCurrentUser = true
+    leaderboardUsers[1].name = user?.name
+    setLeaderboardData([...leaderboardUsers])
+  }, [user])
 
   return (
     <StandardLayout>

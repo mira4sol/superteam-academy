@@ -1,4 +1,6 @@
+import { getPayloadClient } from '@/libs/payload'
 import { setRequestLocale } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 
 import dynamic from 'next/dynamic'
 
@@ -17,5 +19,21 @@ export default async function ProfilePage({ params }: Props) {
 
   setRequestLocale(locale)
 
-  return <Profile username={username} />
+  const payload = await getPayloadClient()
+  const result = await payload.find({
+    collection: 'users',
+    where: {
+      username: {
+        equals: username,
+      },
+    },
+    depth: 1,
+  })
+
+  const dbUser = result.docs[0]
+  if (!dbUser) {
+    notFound()
+  }
+
+  return <Profile username={username} dbUser={dbUser} />
 }

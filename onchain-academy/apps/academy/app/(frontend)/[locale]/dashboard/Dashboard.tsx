@@ -30,10 +30,34 @@ import { KPI } from './KPI'
 //  cold grey-black border, keeping everything in the warm family.
 // ─────────────────────────────────────────────────────────────
 
+// ─── Props ────────────────────────────────────────────────────
+interface DashboardProps {
+  dbUser?: {
+    displayName?: string
+    username?: string
+    level?: number
+  } | null
+  dbStreak?: {
+    currentStreak?: number
+    history?: { active?: boolean; date?: string | number | Date }[]
+  } | null
+}
+
 // ─── Page ────────────────────────────────────────────────────
 
-export default function Dashboard() {
-  const xpPct = Math.round((user.xp / user.xpToNext) * 100)
+export default function Dashboard({ dbUser, dbStreak }: DashboardProps) {
+  const staticUser = user
+  const u = {
+    ...staticUser,
+    name:
+      (dbUser?.displayName as string) ||
+      (dbUser?.username as string) ||
+      staticUser.name,
+    level: (dbUser?.level as number) || staticUser.level,
+    streak: (dbStreak?.currentStreak as number) ?? staticUser.streak,
+  }
+
+  const xpPct = Math.round((u.xp / u.xpToNext) * 100)
 
   // Generate calendar data for current month
   const today = new Date()
@@ -53,11 +77,29 @@ export default function Dashboard() {
     calendarDays.push(i)
   }
 
-  // Streak data mapping (simplified - in real app would come from backend)
-  const streakDates = new Set([
-    1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 22, 23, 24,
-    25, 26, 27, 28,
-  ])
+  // Streak data mapping
+  const streakDates = new Set<number>()
+  if (dbStreak?.history && Array.isArray(dbStreak.history)) {
+    dbStreak.history.forEach(
+      (h: { active?: boolean; date?: string | number | Date }) => {
+        if (h.active && h.date) {
+          const d = new Date(h.date)
+          if (
+            d.getMonth() === currentMonth &&
+            d.getFullYear() === currentYear
+          ) {
+            streakDates.add(d.getDate())
+          }
+        }
+      },
+    )
+  } else {
+    // static fallback
+    ;[
+      1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20, 22, 23,
+      24, 25, 26, 27, 28,
+    ].forEach((v) => streakDates.add(v))
+  }
   const todayDate = today.getDate()
 
   const monthNames = [
@@ -95,28 +137,27 @@ export default function Dashboard() {
             <div>
               <div className='flex items-center gap-2 mb-2'>
                 <span className='font-ui text-[0.58rem] font-bold tracking-[0.1em] uppercase px-2.5 py-1 rounded-full bg-amber/20 text-amber border border-amber/35'>
-                  🔥 {user.streak}-Day Streak
+                  🔥 {u.streak}-Day Streak
                 </span>
                 <span className='font-ui text-[0.58rem] font-bold tracking-[0.1em] uppercase px-2.5 py-1 rounded-full bg-green-mint/15 text-green-mint border border-green-mint/30'>
-                  Level {user.level} · {user.tier}
+                  Level {u.level} · {u.tier}
                 </span>
               </div>
               <h1 className='font-display text-[1.75rem] lg:text-[2.1rem] font-black tracking-[-0.025em] leading-tight text-cream'>
-                Welcome back, {user.name.split(' ')[0]} 👋
+                Welcome back, {u.name.split(' ')[0]} 👋
               </h1>
               <p className='font-ui text-[0.86rem] mt-1.5 text-cream/58'>
-                #{user.rank} globally · Keep building on Solana
+                #{u.rank} globally · Keep building on Solana
               </p>
             </div>
 
             <div className='sm:min-w-[220px]'>
               <div className='flex justify-between mb-1.5'>
                 <span className='font-ui text-[0.65rem] uppercase tracking-wider text-cream/45'>
-                  Level {user.level}
+                  Level {u.level}
                 </span>
                 <span className='font-ui text-[0.65rem] font-bold text-amber'>
-                  {user.xp.toLocaleString()} / {user.xpToNext.toLocaleString()}{' '}
-                  XP
+                  {u.xp.toLocaleString()} / {u.xpToNext.toLocaleString()} XP
                 </span>
               </div>
               <div className='h-[7px] rounded-full overflow-hidden bg-cream/10'>
@@ -127,10 +168,10 @@ export default function Dashboard() {
               </div>
               <div className='flex justify-between mt-1.5'>
                 <span className='font-ui text-[0.6rem] text-cream/35'>
-                  {xpPct}% to Level {user.level + 1}
+                  {xpPct}% to Level {u.level + 1}
                 </span>
                 <span className='font-ui text-[0.6rem] text-cream/35'>
-                  {(user.xpToNext - user.xp).toLocaleString()} XP left
+                  {(u.xpToNext - u.xp).toLocaleString()} XP left
                 </span>
               </div>
             </div>
@@ -143,7 +184,7 @@ export default function Dashboard() {
         <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
           <KPI
             icon={<Zap size={18} strokeWidth={1.5} />}
-            value={user.xp.toLocaleString()}
+            value={u.xp.toLocaleString()}
             label='Total XP'
             delta='+350 today'
             ibgClass='bg-amber/15'
@@ -152,7 +193,7 @@ export default function Dashboard() {
           />
           <KPI
             icon={<Trophy size={18} strokeWidth={1.5} />}
-            value={`#${user.rank}`}
+            value={`#${u.rank}`}
             label='Global Rank'
             delta='↑ 8 spots'
             ibgClass='bg-green-primary/14'
@@ -161,7 +202,7 @@ export default function Dashboard() {
           />
           <KPI
             icon={<Flame size={18} strokeWidth={1.5} />}
-            value={`${user.streak}d`}
+            value={`${u.streak}d`}
             label='Streak'
             delta='Personal best!'
             ibgClass='bg-amber/15'
@@ -170,7 +211,7 @@ export default function Dashboard() {
           />
           <KPI
             icon={<BookOpen size={18} strokeWidth={1.5} />}
-            value='47'
+            value='0'
             label='Lessons Done'
             delta='+3 this week'
             ibgClass='bg-green-primary/11'
@@ -316,7 +357,7 @@ export default function Dashboard() {
               <div className='flex items-center gap-2.5 mb-4'>
                 <Flame size={22} strokeWidth={1.5} className='text-amber' />
                 <span className='font-display text-[2.1rem] font-black leading-none text-charcoal'>
-                  {user.streak}
+                  {u.streak}
                 </span>
                 <span className='font-ui text-[0.72rem] leading-tight text-text-tertiary'>
                   day
@@ -436,20 +477,20 @@ export default function Dashboard() {
 
               <div className='flex items-center gap-2 mt-3 pt-3 border-t border-border-warm'>
                 <span className='font-ui text-[0.65rem] text-text-tertiary'>
-                  4 of 6
+                  0 of 6
                 </span>
                 <div className='flex-1 h-1.5 rounded-full overflow-hidden bg-border-warm'>
                   <div
                     className='h-full rounded-full'
                     style={{
-                      width: '66%',
+                      width: '0%',
                       background:
                         'linear-gradient(90deg, hsl(var(--amber)), hsl(var(--amber-dark)))',
                     }}
                   />
                 </div>
                 <span className='font-ui text-[0.65rem] font-bold text-amber-dark'>
-                  66%
+                  0%
                 </span>
               </div>
             </div>

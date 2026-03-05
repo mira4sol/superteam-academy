@@ -1,10 +1,10 @@
 export const user = {
   name: 'Alex Rivera',
-  level: 7,
-  xp: 4280,
-  xpToNext: 5000,
-  rank: 142,
-  streak: 12,
+  level: 1,
+  xp: 100,
+  xpToNext: 1000,
+  rank: 0,
+  streak: 0,
   tier: 'Gold',
 }
 
@@ -12,9 +12,9 @@ export const courses = [
   {
     id: 1,
     title: 'Solana Fundamentals',
-    progress: 65,
+    progress: 0,
     nextLesson: 'Program Derived Addresses',
-    cur: 15,
+    cur: 0,
     total: 22,
     colorClass: 'text-green-primary',
     diff: 'Beginner',
@@ -22,9 +22,9 @@ export const courses = [
   {
     id: 2,
     title: 'Anchor Framework Mastery',
-    progress: 28,
+    progress: 0,
     nextLesson: 'Account Validation',
-    cur: 8,
+    cur: 0,
     total: 34,
     colorClass: 'text-green-mint',
     diff: 'Intermediate',
@@ -32,9 +32,9 @@ export const courses = [
   {
     id: 3,
     title: 'Building DeFi on Solana',
-    progress: 10,
+    progress: 0,
     nextLesson: 'AMM Architecture',
-    cur: 3,
+    cur: 0,
     total: 28,
     colorClass: 'text-amber',
     diff: 'Advanced',
@@ -42,19 +42,20 @@ export const courses = [
 ]
 
 export const streakWeeks = [
-  [1, 1, 1, 1, 1, 0, 1],
-  [1, 1, 1, 1, 0, 1, 1],
-  [1, 1, 1, 1, 1, 1, 0],
-  [1, 1, 1, 1, 2, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
 ]
 
 export const badges = [
-  { id: 1, name: 'First Deploy', icon: '🚀', earned: true, xp: 100 },
-  { id: 2, name: 'Streak x7', icon: '🔥', earned: true, xp: 150 },
-  { id: 3, name: 'DeFi Pioneer', icon: '⚡', earned: true, xp: 300 },
-  { id: 4, name: 'Code Warrior', icon: '⚔️', earned: true, xp: 200 },
-  { id: 5, name: 'NFT Builder', icon: '🎨', earned: false, xp: 250 },
-  { id: 6, name: 'Validator Pro', icon: '🛡️', earned: false, xp: 400 },
+  { id: 1, name: 'Early User', icon: '🚀', earned: true, xp: 100 },
+  // { id: 1, name: 'First Deploy', icon: '🚀', earned: true, xp: 100 },
+  // { id: 2, name: 'Streak x7', icon: '🔥', earned: true, xp: 150 },
+  // { id: 3, name: 'DeFi Pioneer', icon: '⚡', earned: true, xp: 300 },
+  // { id: 4, name: 'Code Warrior', icon: '⚔️', earned: true, xp: 200 },
+  // { id: 5, name: 'NFT Builder', icon: '🎨', earned: false, xp: 250 },
+  // { id: 6, name: 'Validator Pro', icon: '🛡️', earned: false, xp: 400 },
 ]
 
 export const recommended = [
@@ -84,39 +85,46 @@ export const recommended = [
 export const feed = [
   {
     id: 1,
-    text: 'Completed "Transaction Lifecycle"',
-    time: '2h ago',
-    xp: 50,
-    colorClass: 'bg-green-primary',
-  },
-  {
-    id: 2,
-    text: 'Earned "Code Warrior" badge',
-    time: '5h ago',
-    xp: 200,
-    colorClass: 'bg-amber',
-  },
-  {
-    id: 3,
-    text: 'Passed Challenge: Build a Vault',
-    time: '1d ago',
-    xp: 150,
-    colorClass: 'bg-green-mint',
-  },
-  {
-    id: 4,
-    text: 'Completed "PDAs Explained"',
-    time: '1d ago',
-    xp: 50,
-    colorClass: 'bg-green-primary',
-  },
-  {
-    id: 5,
-    text: 'Achieved 10-day streak milestone',
-    time: '2d ago',
+    text: 'Completed "Joined"',
+    time: 'Recently',
     xp: 100,
-    colorClass: 'bg-amber',
+    colorClass: 'bg-green-primary',
   },
+  // {
+  //   id: 1,
+  //   text: 'Completed "Transaction Lifecycle"',
+  //   time: '2h ago',
+  //   xp: 50,
+  //   colorClass: 'bg-green-primary',
+  // },
+  // {
+  //   id: 2,
+  //   text: 'Earned "Code Warrior" badge',
+  //   time: '5h ago',
+  //   xp: 200,
+  //   colorClass: 'bg-amber',
+  // },
+  // {
+  //   id: 3,
+  //   text: 'Passed Challenge: Build a Vault',
+  //   time: '1d ago',
+  //   xp: 150,
+  //   colorClass: 'bg-green-mint',
+  // },
+  // {
+  //   id: 4,
+  //   text: 'Completed "PDAs Explained"',
+  //   time: '1d ago',
+  //   xp: 50,
+  //   colorClass: 'bg-green-primary',
+  // },
+  // {
+  //   id: 5,
+  //   text: 'Achieved 10-day streak milestone',
+  //   time: '2d ago',
+  //   xp: 100,
+  //   colorClass: 'bg-amber',
+  // },
 ]
 
 export const diffStyle: Record<

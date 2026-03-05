@@ -1,3 +1,11 @@
+import type {
+  FeatureItem,
+  LanguageOption,
+  PartnerItem,
+  PathItem,
+  StatItem,
+  TestimonialItem,
+} from '@/interfaces/home.types'
 import {
   Award,
   BarChart2,
@@ -10,14 +18,6 @@ import {
   Wallet,
 } from 'lucide-react'
 import type { ReactNode } from 'react'
-import type {
-  FeatureItem,
-  LanguageOption,
-  PartnerItem,
-  PathItem,
-  StatItem,
-  TestimonialItem,
-} from '@/interfaces/home.types'
 
 const ACCENT = '#ffd23f'
 const PRIMARY = '#008c4c'
@@ -116,13 +116,13 @@ export const PATHS: PathItem[] = [
     title: 'Solana Foundations',
     desc: 'Master the core architecture — accounts, programs, PDAs, and the Sealevel runtime. The base everything else is built on.',
     modules: [
-      { label: 'Blockchain Basics', done: true },
-      { label: 'Solana Architecture', done: true },
-      { label: 'Wallets & Keypairs', done: true },
-      { label: 'Accounts Model', active: true },
+      { label: 'Blockchain Basics', done: false },
+      { label: 'Solana Architecture', done: false },
+      { label: 'Wallets & Keypairs', done: false },
+      { label: 'Accounts Model', active: false },
       { label: 'Your First Transaction', done: false },
     ],
-    progress: 68,
+    progress: 0,
     xp: '450 XP',
     duration: '6 hrs',
     lessons: 14,
@@ -138,13 +138,13 @@ export const PATHS: PathItem[] = [
     title: 'Build On-chain Programs',
     desc: 'Write, deploy, and test Rust-based Solana programs using the Anchor framework. Go from local validator to mainnet.',
     modules: [
-      { label: 'Rust for Solana', done: true },
-      { label: 'Anchor Framework', done: true },
-      { label: 'State Management', active: true },
+      { label: 'Rust for Solana', done: false },
+      { label: 'Anchor Framework', done: false },
+      { label: 'State Management', active: false },
       { label: 'CPIs & Composability', done: false },
       { label: 'Testing & Deployment', done: false },
     ],
-    progress: 42,
+    progress: 0,
     xp: '900 XP',
     duration: '12 hrs',
     lessons: 22,
