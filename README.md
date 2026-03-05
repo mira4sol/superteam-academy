@@ -1,96 +1,129 @@
 # Superteam Academy
 
-Decentralized learning platform on Solana. Learners enroll in courses, complete lessons to earn soulbound XP tokens, receive Metaplex Core credential NFTs, and collect achievements. Course creators earn XP rewards. Platform governed by multisig authority.
+Superteam Academy is a premium, decentralized web3 learning platform on Solana. It combines a Next.js full-stack application with an Anchor-based Solana smart contract.
 
-## Monorepo Structure
+Learners can enroll in courses, complete lessons to earn soulbound XP tokens, receive Metaplex Core credential NFTs, and collect achievements. The platform features an integrated content management system (CMS) for managing educational material.
 
-```
-superteam-academy/
-├── onchain-academy/          ← Anchor program (deployed on devnet)
-│   ├── programs/             ← Rust program source (16 instructions)
-│   ├── tests/                ← 77 Rust + 62 TypeScript tests
-│   └── scripts/              ← Devnet interaction scripts
-├── app/                      ← Next.js frontend (bounty)
-├── sdk/                      ← TypeScript SDK (future)
-├── docs/                     ← Documentation
-│   ├── SPEC.md               ← Program specification
-│   ├── ARCHITECTURE.md       ← Account maps, data flows, CU budgets
-│   ├── INTEGRATION.md        ← Frontend integration guide
-│   └── DEPLOY-PROGRAM.md     ← Deploy your own devnet instance
-└── wallets/                  ← Keypairs (gitignored)
-```
+## Overview
 
-## Quick Start
+The platform is structured as a monorepo consisting of:
 
-```bash
-git clone https://github.com/solanabr/superteam-academy.git
-cd superteam-academy/onchain-academy
-
-# Install dependencies
-yarn install
-
-# Build the program
-anchor build
-
-# Run tests (localnet)
-anchor test
-
-# Rust unit tests
-cargo test --manifest-path tests/rust/Cargo.toml
-```
-
-## Devnet Deployment
-
-The program is live on devnet:
-
-| | Address |
-|---|---|
-| **Program** | [`ACADBRCB3zGvo1KSCbkztS33ZNzeBv2d7bqGceti3ucf`](https://explorer.solana.com/address/ACADBRCB3zGvo1KSCbkztS33ZNzeBv2d7bqGceti3ucf?cluster=devnet) |
-| **XP Mint** | [`xpXPUjkfk7t4AJF1tYUoyAYxzuM5DhinZWS1WjfjAu3`](https://explorer.solana.com/address/xpXPUjkfk7t4AJF1tYUoyAYxzuM5DhinZWS1WjfjAu3?cluster=devnet) |
-| **Authority** | [`ACAd3USj2sMV6drKcMY2wZtNkhVDHWpC4tfJe93hgqYn`](https://explorer.solana.com/address/ACAd3USj2sMV6drKcMY2wZtNkhVDHWpC4tfJe93hgqYn?cluster=devnet) |
-
-Frontend bounty applicants: [deploy your own instance](docs/DEPLOY-PROGRAM.md) on devnet.
+- **`onchain-academy/`**: The Anchor program handling all on-chain logic (deployable on devnet). Includes Rust source code, tests, and interaction scripts.
+- **`onchain-academy/apps/academy`**: The Next.js frontend and admin dashboard. Built with React, Tailwind CSS, and Better Auth.
 
 ## Tech Stack
 
-| Layer | Stack |
-|---|---|
-| **Programs** | Anchor 0.31+, Rust 1.82+ |
-| **XP Tokens** | Token-2022 (NonTransferable, PermanentDelegate) |
-| **Credentials** | Metaplex Core NFTs (soulbound via PermanentFreezeDelegate) |
-| **Testing** | ts-mocha/Chai, Cargo test |
-| **Client** | TypeScript, @coral-xyz/anchor, @solana/web3.js |
-| **Frontend** | Next.js 14+, React, Tailwind CSS |
-| **RPC** | Helius (DAS API for credential queries + XP leaderboard) |
-| **Content** | Arweave (immutable course content) |
-| **Multisig** | Squads (platform authority) |
+**Frontend & API**
 
-## Documentation
+- **Framework**: Next.js (App Router), React 19
+- **Styling**: Tailwind CSS & Shadcn UI
+- **Authentication**: Better Auth (GitHub, Google, Email)
+- **CMS**: Payload CMS (for course and content management)
+- **Database**: PostgreSQL
 
-- **[Program Specification](docs/SPEC.md)** — 16 instructions, 6 PDA types, 26 errors, 15 events
-- **[Architecture](docs/ARCHITECTURE.md)** — Account maps, data flows, CU budgets
-- **[Frontend Integration](docs/INTEGRATION.md)** — PDA derivation, instruction usage, events, error handling
-- **[Deployment Guide](docs/DEPLOY-PROGRAM.md)** — Deploy your own program instance on devnet
-- **[Frontend Bounty](docs/bounty.md)** — $4,800 USDC bounty for building the frontend
+**Web3 Integration**
 
-## Contributing
+- **Smart Contracts**: Anchor Framework (Rust)
+- **Solana Interaction**: `@solana/web3.js`, `@coral-xyz/anchor`
+- **Wallet Connection**: Wallet Adapter React
+- **Tokens**: SPL Token-2022 (XP system)
+- **Credentials**: Metaplex Core NFTs (soulbound)
+
+## Local Dev Setup
+
+### 1. Web Application
+
+Navigate to the frontend app directory:
 
 ```bash
-# Branch naming
-git checkout -b <type>/<scope>-<description>-<DD-MM-YYYY>
-# Examples:
-#   feat/enrollment-lessons-11-02-2026
-#   fix/cooldown-check-12-02-2026
-#   docs/integration-guide-17-02-2026
-
-# Before merging
-anchor build
-cargo fmt
-cargo clippy -- -W clippy::all
-cargo test --manifest-path onchain-academy/tests/rust/Cargo.toml
-anchor test
+cd onchain-academy/apps/academy
 ```
 
-## License
+Install dependencies:
 
-[MIT](LICENSE)
+```bash
+npm install
+```
+
+Set up the database. Ensure PostgreSQL is running locally and create a new database.
+
+Initialize the structural tables and seed mock data:
+
+```bash
+npm run better:migrate
+npm run seed
+```
+
+Start the local development server:
+
+```bash
+npm run dev
+```
+
+The app will be accessible at `http://localhost:3000`.
+
+### 2. Smart Contract
+
+Navigate to the Anchor program directory:
+
+```bash
+cd onchain-academy
+```
+
+Install dependencies and build the program:
+
+```bash
+yarn install
+anchor build
+```
+
+Run tests to verify the setup:
+
+```bash
+anchor test
+cargo test --manifest-path tests/rust/Cargo.toml
+```
+
+## Environment Variables
+
+For the web application, create a `.env` file in `onchain-academy/apps/academy/.env` (copy from `.env.example`):
+
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/superteam_academy
+PAYLOAD_SECRET=your_secret_key
+
+BETTER_AUTH_SECRET=your_auth_secret
+BETTER_AUTH_URL="http://localhost:3000"
+NEXT_PUBLIC_BETTER_AUTH_URL="http://localhost:3000"
+
+GOOGLE_CLIENT_ID=your_google_id
+GOOGLE_CLIENT_SECRET=your_google_secret
+
+GITHUB_CLIENT_ID=your_github_id
+GITHUB_CLIENT_SECRET=your_github_secret
+```
+
+## Deployment
+
+### Frontend (Vercel)
+
+1. Import your fork of the repository into Vercel.
+2. Set the Root Directory to `onchain-academy/apps/academy`.
+3. Keep the Framework Preset as Next.js.
+4. Add all environment variables from your `.env` to the Vercel project settings.
+5. Deploy.
+
+### Smart Contract (Devnet)
+
+From the `onchain-academy` directory:
+
+```bash
+anchor build
+anchor deploy --provider.cluster devnet
+```
+
+Ensure your Anchor.toml is configured for the devnet cluster and you have sufficient SOL in your deployer wallet. You can then run the initialization script:
+
+```bash
+npx ts-node scripts/initialize.ts
+```
