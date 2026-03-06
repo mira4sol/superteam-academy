@@ -1,0 +1,47 @@
+{
+  "evolution": {
+    "egg": "Ovo",
+    "hatchling": "Filhote",
+    "dragon": "Dragão"
+  },
+  "banner": {
+    "levelBadge": "Nível {level} · {tier}",
+    "handleRank": "@{handle} · #{rank} globalmente",
+    "joined": "Entrou em {date}",
+    "github": "GitHub",
+    "twitter": "Twitter",
+    "website": "Site",
+    "levelLabel": "Nível {level}",
+    "xpProgress": "{current} / {total} XP",
+    "xpToNext": "{pct}% para Nível {level}",
+    "xpLeft": "{amount} XP restantes"
+  },
+  "sections": {
+    "quickStats": "Estatísticas Rápidas",
+    "credentials": "Credenciais On-Chain",
+    "cNFTs": "cNFTs",
+    "solscan": "Solscan",
+    "completedCourses": "Cursos Concluídos",
+    "courseCount": "{count} cursos",
+    "lessons": "aulas",
+    "skillRadar": "Radar de Habilidades",
+    "skillRadarDesc": "Proficiência nas principais áreas de desenvolvimento Solana",
+    "achievements": "Conquistas",
+    "achievementsCount": "{earned} de {total}"
+  },
+  "skills": {
+    "Rust": "Rust",
+    "Anchor": "Anchor",
+    "Frontend": "Frontend",
+    "Security": "Segurança",
+    "DeFi": "DeFi",
+    "NFTs": "NFTs"
+  },
+  "stats": {
+    "totalXp": "XP Total Ganho",
+    "coursesCompleted": "Cursos Concluídos",
+    "credentialsEarned": "Credenciais Obtidas",
+    "currentStreak": "Sequência Atual",
+    "days": "dias"
+  }
+}

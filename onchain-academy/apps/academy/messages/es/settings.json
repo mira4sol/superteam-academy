@@ -1,0 +1,86 @@
+{
+  "page": {
+    "title": "Configuración",
+    "subtitle": "Administra tu perfil, cuenta y preferencias"
+  },
+  "tabs": {
+    "profile": "Perfil",
+    "account": "Cuenta",
+    "preferences": "Preferencias",
+    "privacy": "Privacidad",
+    "signOut": "Cerrar sesión"
+  },
+  "profile": {
+    "photoTitle": "Foto de Perfil",
+    "uploadPhoto": "Subir foto",
+    "photoHint": "JPG, PNG o GIF · Máx 2MB",
+    "basicInfo": "Información Básica",
+    "displayName": "Nombre para mostrar",
+    "username": "Usuario",
+    "bio": "Biografía",
+    "website": "Sitio web",
+    "usernameHint": "superteam.gg/profile/username",
+    "bioHint": "Máx 160 caracteres",
+    "placeholderName": "Tu nombre",
+    "placeholderUsername": "usuario",
+    "placeholderBio": "Cuéntale a otros qué construyes...",
+    "placeholderWebsite": "https://tusitio.com",
+    "socialLinks": "Enlaces Sociales",
+    "twitter": "X (Twitter)",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "telegram": "Telegram",
+    "save": "Guardar cambios",
+    "saved": "¡Guardado!"
+  },
+  "account": {
+    "email": "Correo electrónico",
+    "verified": "Verificado",
+    "changeEmail": "Cambiar correo",
+    "wallets": "Billeteras Conectadas",
+    "walletsHint": "Requerido para ganar XP y recibir credenciales on-chain",
+    "connect": "Conectar",
+    "disconnect": "Desconectar",
+    "socialConnections": "Conexiones Sociales",
+    "dangerZone": "Zona de Peligro",
+    "deleteAccount": "Eliminar cuenta",
+    "deleteDesc": "Eliminar permanentemente tu cuenta y todos los datos asociados",
+    "delete": "Eliminar"
+  },
+  "preferences": {
+    "language": "Idioma",
+    "notifications": "Notificaciones",
+    "notif": {
+      "course_updates": {
+        "label": "Actualizaciones de cursos",
+        "desc": "Nuevas lecciones, cambios de contenido y anuncios de cursos"
+      },
+      "xp_rewards": {
+        "label": "XP y recompensas",
+        "desc": "Cuando ganas XP, subes de nivel o desbloqueas un logro"
+      },
+      "streak_reminders": {
+        "label": "Recordatorios de racha",
+        "desc": "Recordatorios diarios para mantener tu racha de aprendizaje"
+      },
+      "leaderboard": {
+        "label": "Cambios en el ranking",
+        "desc": "Cuando cambia tu posición o entras al top 10"
+      },
+      "community": {
+        "label": "Actividad de la comunidad",
+        "desc": "Respuestas, menciones y nuevas discusiones en tus cursos"
+      }
+    }
+  },
+  "privacy": {
+    "visibility": "Visibilidad del Perfil",
+    "public": "Público",
+    "private": "Privado",
+    "publicDesc": "Cualquiera puede ver tu perfil, XP y cursos completados",
+    "privateDesc": "Solo tú puedes ver tu perfil y progreso",
+    "dataExport": "Exportar Datos",
+    "dataExportDesc": "Descarga una copia de tus datos incluyendo perfil, progreso de cursos, historial de XP y certificados.",
+    "requestExport": "Solicitar exportación de datos"
+  }
+}

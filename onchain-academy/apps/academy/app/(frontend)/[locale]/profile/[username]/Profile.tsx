@@ -1,6 +1,7 @@
 'use client'
 
 import { StandardLayout } from '@/components/layout/StandardLayout'
+import { Link } from '@/i18n/navigation'
 import {
   completedCourses,
   difficultyStyle,
@@ -26,16 +27,18 @@ import {
   Twitter,
   Zap,
 } from 'lucide-react'
-import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 
 // ─── Radar Chart (pure SVG) ────────────────────────────────────
 
 function SkillRadarChart({
   data,
   size = 280,
+  getLabel,
 }: {
   data: typeof skillRadarData
   size?: number
+  getLabel?: (label: string) => string
 }) {
   const cx = size / 2
   const cy = size / 2
@@ -134,6 +137,7 @@ function SkillRadarChart({
         const lp = pointAt(i, maxR + 22)
         const anchor =
           Math.abs(lp.x - cx) < 2 ? 'middle' : lp.x > cx ? 'start' : 'end'
+        const label = getLabel ? getLabel(d.label) : d.label
         return (
           <text
             key={d.label}
@@ -148,7 +152,7 @@ function SkillRadarChart({
               fill: 'hsl(var(--charcoal) / 0.65)',
             }}
           >
-            {d.label}
+            {label}
           </text>
         )
       })}
@@ -160,14 +164,14 @@ function SkillRadarChart({
 
 function EvolutionBar({ stage }: { stage: number }) {
   const stages = [
-    { label: 'Egg', emoji: '🥚' },
-    { label: 'Hatchling', emoji: '🐲' },
-    { label: 'Dragon', emoji: '🐉' },
+    { key: 'egg', emoji: '🥚' },
+    { key: 'hatchling', emoji: '🐲' },
+    { key: 'dragon', emoji: '🐉' },
   ]
   return (
     <div className='flex items-center gap-1.5'>
       {stages.map((s, i) => (
-        <div key={s.label} className='flex items-center gap-1'>
+        <div key={s.key} className='flex items-center gap-1'>
           <div
             className='flex items-center justify-center rounded-full transition-all'
             style={{
@@ -226,6 +230,7 @@ interface ProfileProps {
 }
 
 export const Profile = ({ username, dbUser }: ProfileProps) => {
+  const t = useTranslations('profile')
   const staticU = profileUser
 
   let joinDate = staticU.joinDate
@@ -295,24 +300,26 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
 
             {/* Info */}
             <div className='flex-1 min-w-0'>
+              {/* Level badge */}
               <div className='flex flex-wrap items-center gap-2 mb-1.5'>
                 <h1 className='font-display text-[1.75rem] lg:text-[2.1rem] font-black tracking-[-0.025em] leading-tight text-cream'>
                   {u.name}
                 </h1>
                 <span className='font-ui text-[0.7rem] font-semibold px-2.5 py-0.5 rounded-full bg-green-mint/15 text-green-mint border border-green-mint/30'>
-                  Level {u.level} · {u.tier}
+                  {t('banner.levelBadge', { level: u.level, tier: u.tier })}
                 </span>
               </div>
 
+              {/* Handle and rank */}
               <p className='font-ui text-[0.8rem] text-cream/50 mb-2'>
-                @{u.handle} · #{u.rank} globally
+                {t('banner.handleRank', { handle: u.handle, rank: u.rank })}
               </p>
 
               <p className='font-ui text-[0.86rem] text-cream/65 max-w-xl mb-3 leading-relaxed'>
                 {u.bio}
               </p>
 
-              {/* Social + Join Date */}
+              {/* Social links and joined date */}
               <div className='flex flex-wrap items-center gap-3'>
                 <a
                   href={u.socials.github}
@@ -321,7 +328,7 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
                   className='flex items-center gap-1.5 font-ui text-[0.7rem] text-cream/45 hover:text-cream/80 transition-colors'
                 >
                   <Github size={14} strokeWidth={1.5} />
-                  GitHub
+                  {t('banner.github')}
                 </a>
                 <a
                   href={u.socials.twitter}
@@ -330,7 +337,7 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
                   className='flex items-center gap-1.5 font-ui text-[0.7rem] text-cream/45 hover:text-cream/80 transition-colors'
                 >
                   <Twitter size={14} strokeWidth={1.5} />
-                  Twitter
+                  {t('banner.twitter')}
                 </a>
                 <a
                   href={u.socials.website}
@@ -339,24 +346,27 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
                   className='flex items-center gap-1.5 font-ui text-[0.7rem] text-cream/45 hover:text-cream/80 transition-colors'
                 >
                   <Globe size={14} strokeWidth={1.5} />
-                  Website
+                  {t('banner.website')}
                 </a>
                 <span className='w-[1px] h-3.5 bg-cream/15' />
                 <span className='flex items-center gap-1.5 font-ui text-[0.65rem] text-cream/40'>
                   <Calendar size={12} strokeWidth={1.5} />
-                  Joined {u.joinDate}
+                  {t('banner.joined', { date: u.joinDate })}
                 </span>
               </div>
             </div>
 
-            {/* XP Bar (right side on desktop) */}
+            {/* XP bar */}
             <div className='sm:min-w-[200px] flex-shrink-0'>
               <div className='flex justify-between mb-1.5'>
                 <span className='font-ui text-[0.65rem] uppercase tracking-wider text-cream/45'>
-                  Level {u.level}
+                  {t('banner.levelLabel', { level: u.level })}
                 </span>
                 <span className='font-ui text-[0.65rem] font-bold text-amber'>
-                  {u.xp.toLocaleString()} / {u.xpToNext.toLocaleString()} XP
+                  {t('banner.xpProgress', {
+                    current: u.xp.toLocaleString(),
+                    total: u.xpToNext.toLocaleString(),
+                  })}
                 </span>
               </div>
               <div className='h-[7px] rounded-full overflow-hidden bg-cream/10'>
@@ -369,11 +379,15 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
               </div>
               <div className='flex justify-between mt-1.5'>
                 <span className='font-ui text-[0.6rem] text-cream/35'>
-                  {Math.round((u.xp / u.xpToNext) * 100)}% to Level{' '}
-                  {u.level + 1}
+                  {t('banner.xpToNext', {
+                    pct: Math.round((u.xp / u.xpToNext) * 100),
+                    level: u.level + 1,
+                  })}
                 </span>
                 <span className='font-ui text-[0.6rem] text-cream/35'>
-                  {(u.xpToNext - u.xp).toLocaleString()} XP left
+                  {t('banner.xpLeft', {
+                    amount: (u.xpToNext - u.xp).toLocaleString(),
+                  })}
                 </span>
               </div>
             </div>
@@ -402,16 +416,16 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
                     strokeWidth={1.5}
                     className='text-green-primary'
                   />
-                  On-Chain Credentials
+                  {t('sections.credentials')}
                 </h2>
                 <span className='font-ui text-[0.6rem] font-bold tracking-wider uppercase text-text-tertiary'>
-                  cNFTs
+                  {t('sections.cNFTs')}
                 </span>
               </div>
 
               <div className='flex flex-col gap-3'>
                 {onChainCredentials.map((cred) => (
-                  <Link href={`/en/certificates/${cred.id}`} key={cred.id}>
+                  <Link href={`/certificates/${cred.id}`} key={cred.id}>
                     <div
                       className='group flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-xl border transition-all duration-200 cursor-pointer hover:-translate-y-1 hover:shadow-md'
                       style={{
@@ -483,7 +497,7 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
                             onClick={(e) => e.stopPropagation()}
                             className='flex items-center gap-1 font-ui text-[0.58rem] font-semibold text-green-primary hover:underline'
                           >
-                            Solscan
+                            {t('sections.solscan')}
                             <ExternalLink size={10} strokeWidth={2} />
                           </a>
                         </div>
@@ -504,10 +518,10 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
               <div className='flex items-center justify-between mb-5'>
                 <h2 className='font-display text-[1.1rem] font-bold text-charcoal flex items-center gap-2'>
                   <Trophy size={18} strokeWidth={1.5} className='text-amber' />
-                  Completed Courses
+                  {t('sections.completedCourses')}
                 </h2>
                 <span className='font-ui text-[0.65rem] font-bold text-text-tertiary'>
-                  {completedCourses.length} courses
+                  {t('sections.courseCount', { count: completedCourses.length })}
                 </span>
               </div>
 
@@ -563,7 +577,7 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
                     <div className='flex items-center justify-between'>
                       <span className='font-ui text-[0.65rem] flex items-center gap-1.5 text-text-tertiary'>
                         <BookOpen size={10} strokeWidth={1.5} />
-                        {course.lessons} lessons · {course.duration}
+                        {course.lessons} {t('sections.lessons')} · {course.duration}
                       </span>
                       <div className='flex items-center gap-3'>
                         <span className='font-ui text-[0.6rem] font-bold px-1.5 py-0.5 rounded-full bg-green-primary/9 text-green-primary'>
@@ -582,7 +596,7 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
 
           {/* ─── RIGHT — 1/3 ─────────────────────────────────── */}
           <div className='flex flex-col gap-5'>
-            {/* Skill Radar Chart */}
+            {/* Skill Radar */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -591,13 +605,16 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
             >
               <h2 className='font-display text-[1.1rem] font-bold text-charcoal mb-1 flex items-center gap-2'>
                 <Zap size={18} strokeWidth={1.5} className='text-amber' />
-                Skill Radar
+                {t('sections.skillRadar')}
               </h2>
               <p className='font-ui text-[0.65rem] text-text-tertiary mb-4'>
-                Proficiency across core Solana development areas
+                {t('sections.skillRadarDesc')}
               </p>
 
-              <SkillRadarChart data={skillRadarData} />
+              <SkillRadarChart
+                data={skillRadarData}
+                getLabel={(label) => t(`skills.${label}`)}
+              />
 
               {/* Skill breakdown */}
               <div className='grid grid-cols-2 gap-x-4 gap-y-2 mt-4 pt-4 border-t border-border-warm'>
@@ -607,7 +624,7 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
                     className='flex items-center justify-between'
                   >
                     <span className='font-ui text-[0.65rem] font-medium text-text-secondary'>
-                      {s.label}
+                      {t(`skills.${s.label}`)}
                     </span>
                     <div className='flex items-center gap-2'>
                       <div className='w-12 h-1.5 rounded-full overflow-hidden bg-charcoal/8'>
@@ -633,7 +650,7 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
               </div>
             </motion.div>
 
-            {/* Achievement Badges */}
+            {/* Achievements */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -643,11 +660,13 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
               <div className='flex items-center justify-between mb-4'>
                 <h2 className='font-display text-[1.1rem] font-bold text-charcoal flex items-center gap-2'>
                   <Award size={18} strokeWidth={1.5} className='text-amber' />
-                  Achievements
+                  {t('sections.achievements')}
                 </h2>
                 <span className='font-ui text-[0.6rem] font-bold text-text-tertiary'>
-                  {profileBadges.filter((b) => b.earned).length} of{' '}
-                  {profileBadges.length}
+                  {t('sections.achievementsCount', {
+                    earned: profileBadges.filter((b) => b.earned).length,
+                    total: profileBadges.length,
+                  })}
                 </span>
               </div>
 
@@ -702,8 +721,10 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
               {/* Progress bar */}
               <div className='flex items-center gap-2 mt-4 pt-3 border-t border-border-warm'>
                 <span className='font-ui text-[0.65rem] text-text-tertiary'>
-                  {profileBadges.filter((b) => b.earned).length} of{' '}
-                  {profileBadges.length}
+                  {t('sections.achievementsCount', {
+                    earned: profileBadges.filter((b) => b.earned).length,
+                    total: profileBadges.length,
+                  })}
                 </span>
                 <div className='flex-1 h-1.5 rounded-full overflow-hidden bg-border-warm'>
                   <div
@@ -735,25 +756,25 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
             >
               <h2 className='font-display text-[1.1rem] font-bold text-charcoal mb-4 flex items-center gap-2'>
                 <Star size={18} strokeWidth={1.5} className='text-green-mint' />
-                Quick Stats
+                {t('sections.quickStats')}
               </h2>
 
               <div className='flex flex-col gap-3'>
                 {[
                   {
-                    label: 'Total XP Earned',
+                    labelKey: 'stats.totalXp' as const,
                     value: profileUser.xp.toLocaleString(),
                     icon: <Zap size={14} strokeWidth={1.5} />,
                     color: 'text-amber',
                   },
                   {
-                    label: 'Courses Completed',
+                    labelKey: 'stats.coursesCompleted' as const,
                     value: completedCourses.length.toString(),
                     icon: <BookOpen size={14} strokeWidth={1.5} />,
                     color: 'text-green-primary',
                   },
                   {
-                    label: 'Credentials Earned',
+                    labelKey: 'stats.credentialsEarned' as const,
                     value: onChainCredentials
                       .filter((c) => c.verified)
                       .length.toString(),
@@ -761,8 +782,8 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
                     color: 'text-green-mint',
                   },
                   {
-                    label: 'Current Streak',
-                    value: `${profileUser.streak} days`,
+                    labelKey: 'stats.currentStreak' as const,
+                    value: `${profileUser.streak} ${t('stats.days')}`,
                     icon: (
                       <span className='text-[0.75rem] leading-none'>🔥</span>
                     ),
@@ -770,12 +791,12 @@ export const Profile = ({ username, dbUser }: ProfileProps) => {
                   },
                 ].map((stat) => (
                   <div
-                    key={stat.label}
+                    key={stat.labelKey}
                     className='flex items-center justify-between py-2 border-b border-border-warm last:border-0'
                   >
                     <span className='font-ui text-[0.72rem] text-text-tertiary flex items-center gap-2'>
                       <span className={stat.color}>{stat.icon}</span>
-                      {stat.label}
+                      {t(stat.labelKey)}
                     </span>
                     <span className='font-display text-[0.88rem] font-bold text-charcoal'>
                       {stat.value}

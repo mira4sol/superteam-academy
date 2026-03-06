@@ -1,0 +1,86 @@
+{
+  "page": {
+    "title": "Settings",
+    "subtitle": "Manage your profile, account, and preferences"
+  },
+  "tabs": {
+    "profile": "Profile",
+    "account": "Account",
+    "preferences": "Preferences",
+    "privacy": "Privacy",
+    "signOut": "Sign out"
+  },
+  "profile": {
+    "photoTitle": "Profile Photo",
+    "uploadPhoto": "Upload photo",
+    "photoHint": "JPG, PNG or GIF · Max 2MB",
+    "basicInfo": "Basic Information",
+    "displayName": "Display Name",
+    "username": "Username",
+    "bio": "Bio",
+    "website": "Website",
+    "usernameHint": "superteam.gg/profile/username",
+    "bioHint": "Max 160 characters",
+    "placeholderName": "Your name",
+    "placeholderUsername": "username",
+    "placeholderBio": "Tell others what you build...",
+    "placeholderWebsite": "https://yoursite.com",
+    "socialLinks": "Social Links",
+    "twitter": "X (Twitter)",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "telegram": "Telegram",
+    "save": "Save changes",
+    "saved": "Saved!"
+  },
+  "account": {
+    "email": "Email Address",
+    "verified": "Verified",
+    "changeEmail": "Change email",
+    "wallets": "Connected Wallets",
+    "walletsHint": "Required to earn XP and receive on-chain credentials",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "socialConnections": "Social Connections",
+    "dangerZone": "Danger Zone",
+    "deleteAccount": "Delete account",
+    "deleteDesc": "Permanently remove your account and all associated data",
+    "delete": "Delete"
+  },
+  "preferences": {
+    "language": "Language",
+    "notifications": "Notifications",
+    "notif": {
+      "course_updates": {
+        "label": "Course updates",
+        "desc": "New lessons, content changes, and course announcements"
+      },
+      "xp_rewards": {
+        "label": "XP & rewards",
+        "desc": "When you earn XP, level up, or unlock an achievement"
+      },
+      "streak_reminders": {
+        "label": "Streak reminders",
+        "desc": "Daily reminders to maintain your learning streak"
+      },
+      "leaderboard": {
+        "label": "Leaderboard changes",
+        "desc": "When your rank changes or you enter the top 10"
+      },
+      "community": {
+        "label": "Community activity",
+        "desc": "Replies, mentions, and new discussions in your courses"
+      }
+    }
+  },
+  "privacy": {
+    "visibility": "Profile Visibility",
+    "public": "Public",
+    "private": "Private",
+    "publicDesc": "Anyone can view your profile, XP, and completed courses",
+    "privateDesc": "Only you can see your profile and progress",
+    "dataExport": "Data Export",
+    "dataExportDesc": "Download a copy of your data including profile, course progress, XP history, and certificates.",
+    "requestExport": "Request data export"
+  }
+}

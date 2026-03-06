@@ -8,14 +8,23 @@ export default getRequestConfig(async ({ requestLocale }) => {
     ? requested
     : routing.defaultLocale
 
-  const [homeMessages, coursesMessages, dashboardMessages, leaderboardMessages, loginMessages] =
-    await Promise.all([
-      import(`../messages/${locale}/home.json`).then((m) => m.default),
-      import(`../messages/${locale}/courses.json`).then((m) => m.default),
-      import(`../messages/${locale}/dashboard.json`).then((m) => m.default),
-      import(`../messages/${locale}/leaderboard.json`).then((m) => m.default),
-      import(`../messages/${locale}/login.json`).then((m) => m.default),
-    ])
+  const [
+    homeMessages,
+    coursesMessages,
+    dashboardMessages,
+    leaderboardMessages,
+    loginMessages,
+    profileMessages,
+    settingsMessages,
+  ] = await Promise.all([
+    import(`../messages/${locale}/home.json`).then((m) => m.default),
+    import(`../messages/${locale}/courses.json`).then((m) => m.default),
+    import(`../messages/${locale}/dashboard.json`).then((m) => m.default),
+    import(`../messages/${locale}/leaderboard.json`).then((m) => m.default),
+    import(`../messages/${locale}/login.json`).then((m) => m.default),
+    import(`../messages/${locale}/profile.json`).then((m) => m.default),
+    import(`../messages/${locale}/settings.json`).then((m) => m.default),
+  ])
 
   return {
     locale,
@@ -25,6 +34,8 @@ export default getRequestConfig(async ({ requestLocale }) => {
       dashboard: dashboardMessages,
       leaderboard: leaderboardMessages,
       login: loginMessages,
+      profile: profileMessages,
+      settings: settingsMessages,
     },
   }
 })

@@ -1,0 +1,86 @@
+{
+  "page": {
+    "title": "Configurações",
+    "subtitle": "Gerencie seu perfil, conta e preferências"
+  },
+  "tabs": {
+    "profile": "Perfil",
+    "account": "Conta",
+    "preferences": "Preferências",
+    "privacy": "Privacidade",
+    "signOut": "Sair"
+  },
+  "profile": {
+    "photoTitle": "Foto de Perfil",
+    "uploadPhoto": "Enviar foto",
+    "photoHint": "JPG, PNG ou GIF · Máx 2MB",
+    "basicInfo": "Informações Básicas",
+    "displayName": "Nome de exibição",
+    "username": "Nome de usuário",
+    "bio": "Biografia",
+    "website": "Site",
+    "usernameHint": "superteam.gg/profile/username",
+    "bioHint": "Máx 160 caracteres",
+    "placeholderName": "Seu nome",
+    "placeholderUsername": "usuario",
+    "placeholderBio": "Conte aos outros o que você constrói...",
+    "placeholderWebsite": "https://seusite.com",
+    "socialLinks": "Links Sociais",
+    "twitter": "X (Twitter)",
+    "github": "GitHub",
+    "linkedin": "LinkedIn",
+    "telegram": "Telegram",
+    "save": "Salvar alterações",
+    "saved": "Salvo!"
+  },
+  "account": {
+    "email": "Endereço de e-mail",
+    "verified": "Verificado",
+    "changeEmail": "Alterar e-mail",
+    "wallets": "Carteiras Conectadas",
+    "walletsHint": "Necessário para ganhar XP e receber credenciais on-chain",
+    "connect": "Conectar",
+    "disconnect": "Desconectar",
+    "socialConnections": "Conexões Sociais",
+    "dangerZone": "Zona de Perigo",
+    "deleteAccount": "Excluir conta",
+    "deleteDesc": "Remover permanentemente sua conta e todos os dados associados",
+    "delete": "Excluir"
+  },
+  "preferences": {
+    "language": "Idioma",
+    "notifications": "Notificações",
+    "notif": {
+      "course_updates": {
+        "label": "Atualizações de cursos",
+        "desc": "Novas aulas, alterações de conteúdo e anúncios de cursos"
+      },
+      "xp_rewards": {
+        "label": "XP e recompensas",
+        "desc": "Quando você ganha XP, sobe de nível ou desbloqueia uma conquista"
+      },
+      "streak_reminders": {
+        "label": "Lembretes de sequência",
+        "desc": "Lembretes diários para manter sua sequência de aprendizado"
+      },
+      "leaderboard": {
+        "label": "Mudanças no ranking",
+        "desc": "Quando sua posição muda ou você entra no top 10"
+      },
+      "community": {
+        "label": "Atividade da comunidade",
+        "desc": "Respostas, menções e novas discussões nos seus cursos"
+      }
+    }
+  },
+  "privacy": {
+    "visibility": "Visibilidade do Perfil",
+    "public": "Público",
+    "private": "Privado",
+    "publicDesc": "Qualquer pessoa pode ver seu perfil, XP e cursos concluídos",
+    "privateDesc": "Apenas você pode ver seu perfil e progresso",
+    "dataExport": "Exportar Dados",
+    "dataExportDesc": "Baixe uma cópia dos seus dados incluindo perfil, progresso de cursos, histórico de XP e certificados.",
+    "requestExport": "Solicitar exportação de dados"
+  }
+}

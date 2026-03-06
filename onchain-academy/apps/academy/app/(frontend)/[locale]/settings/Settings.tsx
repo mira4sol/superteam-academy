@@ -12,6 +12,7 @@ import {
 import { truncateAddress } from '@/libs/string'
 import { useAuthStore } from '@/stores'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useTranslations } from 'next-intl'
 import {
   AlertTriangle,
   Bell,
@@ -174,6 +175,7 @@ function SaveButton({
   onClick: () => void
   saved: boolean
 }) {
+  const t = useTranslations('settings')
   return (
     <button
       onClick={onClick}
@@ -190,7 +192,7 @@ function SaveButton({
       ) : (
         <Save size={14} strokeWidth={1.5} />
       )}
-      {saved ? 'Saved!' : 'Save changes'}
+      {saved ? t('profile.saved') : t('profile.save')}
     </button>
   )
 }
@@ -198,7 +200,7 @@ function SaveButton({
 // ─── Tab Panels ──────────────────────────────────────────────────
 
 function ProfileTab() {
-  // const u = MOCK_USER_SETTINGS
+  const t = useTranslations('settings')
   const { user } = useAuthStore()
   const [name, setName] = useState(user?.name || '')
   const [username, setUsername] = useState(user?.username || '')
@@ -218,7 +220,7 @@ function ProfileTab() {
 
   return (
     <div className='flex flex-col gap-8'>
-      {/* Avatar */}
+      {/* Profile photo */}
       <div
         className='p-6 rounded-2xl border'
         style={{
@@ -227,7 +229,7 @@ function ProfileTab() {
         }}
       >
         <h3 className='font-display text-[0.95rem] font-bold text-charcoal mb-4'>
-          Profile Photo
+          {t('profile.photoTitle')}
         </h3>
         <div className='flex items-center gap-5'>
           <div
@@ -249,16 +251,16 @@ function ProfileTab() {
               }}
             >
               <Camera size={13} strokeWidth={1.5} />
-              Upload photo
+              {t('profile.uploadPhoto')}
             </button>
             <p className='font-ui text-[0.62rem] text-text-tertiary'>
-              JPG, PNG or GIF · Max 2MB
+              {t('profile.photoHint')}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Basic info */}
+      {/* Basic information */}
       <div
         className='p-6 rounded-2xl border flex flex-col gap-5'
         style={{
@@ -267,34 +269,38 @@ function ProfileTab() {
         }}
       >
         <h3 className='font-display text-[0.95rem] font-bold text-charcoal'>
-          Basic Information
+          {t('profile.basicInfo')}
         </h3>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-          <FormField label='Display Name'>
-            <Input value={name} onChange={setName} placeholder='Your name' />
+          <FormField label={t('profile.displayName')}>
+            <Input
+              value={name}
+              onChange={setName}
+              placeholder={t('profile.placeholderName')}
+            />
           </FormField>
-          <FormField label='Username' hint='superteam.gg/profile/username'>
+          <FormField label={t('profile.username')} hint={t('profile.usernameHint')}>
             <Input
               value={username}
               onChange={setUsername}
-              placeholder='username'
+              placeholder={t('profile.placeholderUsername')}
               prefix='@'
             />
           </FormField>
         </div>
-        <FormField label='Bio' hint='Max 160 characters'>
+        <FormField label={t('profile.bio')} hint={t('profile.bioHint')}>
           <Textarea
             value={bio}
             onChange={setBio}
-            placeholder='Tell others what you build...'
+            placeholder={t('profile.placeholderBio')}
             rows={3}
           />
         </FormField>
-        <FormField label='Website'>
+        <FormField label={t('profile.website')}>
           <Input
             value={website}
             onChange={setWebsite}
-            placeholder='https://yoursite.com'
+            placeholder={t('profile.placeholderWebsite')}
             prefix='🌐'
           />
         </FormField>
@@ -309,10 +315,10 @@ function ProfileTab() {
         }}
       >
         <h3 className='font-display text-[0.95rem] font-bold text-charcoal'>
-          Social Links
+          {t('profile.socialLinks')}
         </h3>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-          <FormField label='X (Twitter)'>
+          <FormField label={t('profile.twitter')}>
             <Input
               value={twitter}
               onChange={setTwitter}
@@ -320,7 +326,7 @@ function ProfileTab() {
               prefix='x.com/'
             />
           </FormField>
-          <FormField label='GitHub'>
+          <FormField label={t('profile.github')}>
             <Input
               value={github}
               onChange={setGithub}
@@ -328,7 +334,7 @@ function ProfileTab() {
               prefix='github.com/'
             />
           </FormField>
-          <FormField label='LinkedIn'>
+          <FormField label={t('profile.linkedin')}>
             <Input
               value={linkedin}
               onChange={setLinkedin}
@@ -336,7 +342,7 @@ function ProfileTab() {
               prefix='linkedin.com/in/'
             />
           </FormField>
-          <FormField label='Telegram'>
+          <FormField label={t('profile.telegram')}>
             <Input
               value={telegram}
               onChange={setTelegram}
@@ -355,6 +361,7 @@ function ProfileTab() {
 }
 
 function AccountTab() {
+  const t = useTranslations('settings')
   const { user } = useAuthStore()
 
   const [wallets, setWallets] = useState(WALLET_OPTIONS)
@@ -383,7 +390,7 @@ function AccountTab() {
         }}
       >
         <h3 className='font-display text-[0.95rem] font-bold text-charcoal'>
-          Email Address
+          {t('account.email')}
         </h3>
         <div className='flex items-center justify-between gap-4'>
           <div>
@@ -396,7 +403,7 @@ function AccountTab() {
                 strokeWidth={2.5}
                 className='text-green-primary'
               />
-              Verified
+              {t('account.verified')}
             </p>
           </div>
           <button
@@ -407,7 +414,7 @@ function AccountTab() {
               color: 'hsl(var(--charcoal))',
             }}
           >
-            Change email
+            {t('account.changeEmail')}
           </button>
         </div>
       </div>
@@ -422,10 +429,10 @@ function AccountTab() {
       >
         <div>
           <h3 className='font-display text-[0.95rem] font-bold text-charcoal'>
-            Connected Wallets
+            {t('account.wallets')}
           </h3>
           <p className='font-ui text-[0.68rem] text-text-tertiary mt-0.5'>
-            Required to earn XP and receive on-chain credentials
+            {t('account.walletsHint')}
           </p>
         </div>
         <div className='flex flex-col gap-2'>
@@ -478,14 +485,14 @@ function AccountTab() {
                       }
                 }
               >
-                {w.connected ? 'Disconnect' : 'Connect'}
+                {w.connected ? t('account.disconnect') : t('account.connect')}
               </button>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Social auth */}
+      {/* Social connections */}
       <div
         className='p-6 rounded-2xl border flex flex-col gap-4'
         style={{
@@ -494,7 +501,7 @@ function AccountTab() {
         }}
       >
         <h3 className='font-display text-[0.95rem] font-bold text-charcoal'>
-          Social Connections
+          {t('account.socialConnections')}
         </h3>
         <div className='flex flex-col gap-2'>
           {socials.map((s) => (
@@ -557,7 +564,7 @@ function AccountTab() {
                       }
                 }
               >
-                {s.connected ? 'Disconnect' : 'Connect'}
+                {s.connected ? t('account.disconnect') : t('account.connect')}
               </button>
             </div>
           ))}
@@ -575,21 +582,21 @@ function AccountTab() {
         <div className='flex items-center gap-2'>
           <AlertTriangle size={15} strokeWidth={1.5} className='text-red-500' />
           <h3 className='font-display text-[0.95rem] font-bold text-charcoal'>
-            Danger Zone
+            {t('account.dangerZone')}
           </h3>
         </div>
         <div className='flex items-center justify-between'>
           <div>
             <p className='font-ui text-[0.8rem] font-semibold text-charcoal'>
-              Delete account
+              {t('account.deleteAccount')}
             </p>
             <p className='font-ui text-[0.65rem] text-text-tertiary mt-0.5'>
-              Permanently remove your account and all associated data
+              {t('account.deleteDesc')}
             </p>
           </div>
           <button className='flex items-center gap-1.5 font-ui text-[0.72rem] font-semibold px-4 py-2 rounded-lg border border-red-200 text-red-600 hover:bg-red-500/8 cursor-pointer transition-colors'>
             <Trash2 size={13} strokeWidth={1.5} />
-            Delete
+            {t('account.delete')}
           </button>
         </div>
       </div>
@@ -598,6 +605,7 @@ function AccountTab() {
 }
 
 function PreferencesTab() {
+  const t = useTranslations('settings')
   const [language, setLanguage] = useState(MOCK_USER_SETTINGS.language)
   const [notifications, setNotifications] = useState<Record<string, boolean>>(
     Object.fromEntries(NOTIFICATION_PREFS.map((p) => [p.id, p.defaultEnabled])),
@@ -627,7 +635,7 @@ function PreferencesTab() {
             className='text-green-primary'
           />
           <h3 className='font-display text-[0.95rem] font-bold text-charcoal'>
-            Language
+            {t('preferences.language')}
           </h3>
         </div>
         <div className='grid grid-cols-1 sm:grid-cols-3 gap-2'>
@@ -679,7 +687,7 @@ function PreferencesTab() {
         <div className='flex items-center gap-2'>
           <Bell size={16} strokeWidth={1.5} className='text-green-primary' />
           <h3 className='font-display text-[0.95rem] font-bold text-charcoal'>
-            Notifications
+            {t('preferences.notifications')}
           </h3>
         </div>
         <div
@@ -693,10 +701,10 @@ function PreferencesTab() {
             >
               <div>
                 <p className='font-ui text-[0.8rem] font-semibold text-charcoal'>
-                  {pref.label}
+                  {t(`preferences.notif.${pref.id}.label`)}
                 </p>
                 <p className='font-ui text-[0.65rem] text-text-tertiary mt-0.5'>
-                  {pref.description}
+                  {t(`preferences.notif.${pref.id}.desc`)}
                 </p>
               </div>
               <ToggleSwitch
@@ -718,6 +726,7 @@ function PreferencesTab() {
 }
 
 function PrivacyTab() {
+  const t = useTranslations('settings')
   const [visibility, setVisibility] = useState<'public' | 'private'>(
     MOCK_USER_SETTINGS.profileVisibility,
   )
@@ -753,7 +762,7 @@ function PrivacyTab() {
             />
           )}
           <h3 className='font-display text-[0.95rem] font-bold text-charcoal'>
-            Profile Visibility
+            {t('privacy.visibility')}
           </h3>
         </div>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
@@ -775,7 +784,7 @@ function PrivacyTab() {
             >
               <div className='flex items-center justify-between mb-1.5'>
                 <p className='font-ui text-[0.82rem] font-semibold text-charcoal capitalize'>
-                  {opt}
+                  {opt === 'public' ? t('privacy.public') : t('privacy.private')}
                 </p>
                 {visibility === opt && (
                   <div
@@ -788,8 +797,8 @@ function PrivacyTab() {
               </div>
               <p className='font-ui text-[0.65rem] text-text-tertiary'>
                 {opt === 'public'
-                  ? 'Anyone can view your profile, XP, and completed courses'
-                  : 'Only you can see your profile and progress'}
+                  ? t('privacy.publicDesc')
+                  : t('privacy.privateDesc')}
               </p>
             </button>
           ))}
@@ -806,11 +815,10 @@ function PrivacyTab() {
       >
         <div>
           <h3 className='font-display text-[0.95rem] font-bold text-charcoal'>
-            Data Export
+            {t('privacy.dataExport')}
           </h3>
           <p className='font-ui text-[0.68rem] text-text-tertiary mt-1'>
-            Download a copy of your data including profile, course progress, XP
-            history, and certificates.
+            {t('privacy.dataExportDesc')}
           </p>
         </div>
         <button
@@ -822,7 +830,7 @@ function PrivacyTab() {
           }}
         >
           <Download size={14} strokeWidth={1.5} />
-          Request data export
+          {t('privacy.requestExport')}
         </button>
       </div>
 
@@ -836,6 +844,7 @@ function PrivacyTab() {
 // ─── Settings Page ───────────────────────────────────────────────
 
 const Settings = () => {
+  const t = useTranslations('settings')
   const [activeTab, setActiveTab] = useState<TabId>('profile')
 
   const tabContent = {
@@ -852,10 +861,10 @@ const Settings = () => {
         <div className='absolute inset-0 pattern-diagonal' />
         <div className='max-w-[1200px] mx-auto px-4 sm:px-6 py-10 relative z-10'>
           <h1 className='font-display text-[1.8rem] sm:text-[2.2rem] font-black tracking-tight text-cream'>
-            Settings
+            {t('page.title')}
           </h1>
           <p className='font-ui text-[0.82rem] text-cream/55 mt-1'>
-            Manage your profile, account, and preferences
+            {t('page.subtitle')}
           </p>
         </div>
       </div>
@@ -888,7 +897,7 @@ const Settings = () => {
                   }}
                 >
                   <TabIcon id={tab.id} />
-                  {tab.label}
+                  {t(`tabs.${tab.id}`)}
                 </button>
               ))}
             </nav>
@@ -897,7 +906,7 @@ const Settings = () => {
             <div className='mt-6 pt-6 border-t border-border-warm hidden lg:block'>
               <button className='flex items-center gap-2 w-full px-3.5 py-2.5 rounded-xl font-ui text-[0.78rem] text-text-secondary hover:text-red-500 hover:bg-red-500/5 transition-all cursor-pointer'>
                 <LogOut size={15} strokeWidth={1.5} />
-                Sign out
+                {t('tabs.signOut')}
               </button>
             </div>
           </aside>

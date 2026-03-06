@@ -15,12 +15,21 @@ const PUBLIC_ROUTES = [
   '/certificates',
 ]
 
+// Sub-routes that require auth even when under a public prefix (e.g. /courses/.../lesson/...)
+const PROTECTED_SUBROUTES = [/^\/courses\/[^/]+\/lesson\//]
+
 // Routes that require admin role
 const ADMIN_ROUTES = ['/admin']
 
 function isPublicRoute(pathname: string): boolean {
   // Strip locale prefix (e.g. /en/courses → /courses)
   const withoutLocale = pathname.replace(/^\/[a-z]{2}(-[a-z]{2})?/i, '') || '/'
+
+  // Lesson pages and other protected sub-routes under /courses require auth
+  if (PROTECTED_SUBROUTES.some((re) => re.test(withoutLocale))) {
+    return false
+  }
+
   return PUBLIC_ROUTES.some(
     (route) => withoutLocale === route || withoutLocale.startsWith(`${route}/`),
   )
