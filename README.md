@@ -20,6 +20,7 @@ The platform is structured as a monorepo consisting of:
 - **Authentication**: Better Auth (GitHub, Google, Email)
 - **CMS**: Payload CMS (for course and content management)
 - **Database**: PostgreSQL
+- **Monitoring & Heat map + Analytics**: Sentry, PostHog, Google Analytics 4
 
 **Web3 Integration**
 
@@ -101,6 +102,11 @@ GOOGLE_CLIENT_SECRET=your_google_secret
 
 GITHUB_CLIENT_ID=your_github_id
 GITHUB_CLIENT_SECRET=your_github_secret
+
+NEXT_PUBLIC_POSTHOG_KEY=your_posthog_key
+NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
+SENTRY_AUTH_TOKEN=your_sentry_token
 ```
 
 ## Deployment
